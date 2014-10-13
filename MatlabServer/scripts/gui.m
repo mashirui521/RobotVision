@@ -22,7 +22,7 @@ function varargout = gui(varargin)
 
 % Edit the above text to modify the response to help gui
 
-% Last Modified by GUIDE v2.5 13-Oct-2014 20:17:37
+% Last Modified by GUIDE v2.5 14-Oct-2014 01:01:31
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -78,7 +78,30 @@ function pushbutton_startServer_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbutton_startServer (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-sFilePath = start_control();
-if exist(sFilePath, 'file')
-    imshow(sFilePath, 'Parent', handles.axes1);
-end
+evalin('base', 'hService = mls_supporter_start_service(8888);');
+
+
+% --- Executes on button press in pushbutton_stopServer.
+function pushbutton_stopServer_Callback(hObject, eventdata, handles)
+% hObject    handle to pushbutton_stopServer (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+evalin('base', 'mls_supporter_stop_service(hService);');
+
+
+% --- Executes on button press in pushbutton_startReceive.
+function pushbutton_startReceive_Callback(hObject, eventdata, handles)
+% hObject    handle to pushbutton_startReceive (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+hService = evalin('base', 'hService');
+mls_supporter_receive(hService);
+sPath = mls_supporter_save_picture(hService, fullfile(pwd, 'images'));
+imshow(sPath, 'Parent', handles.axes1);
+
+
+% --- Executes on button press in pushbutton_stopReceive.
+function pushbutton_stopReceive_Callback(hObject, eventdata, handles)
+% hObject    handle to pushbutton_stopReceive (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
