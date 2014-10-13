@@ -1,4 +1,4 @@
-package com.camera.cameradummyserver;
+package com.robotvision.javaserver;
 
 import java.io.File;
 import java.io.FileNotFoundException;
