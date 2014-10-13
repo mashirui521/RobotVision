@@ -1,1 +1,3 @@
-bin
+./CameraClient/bin
+
+./CameraDummyServer/bin
