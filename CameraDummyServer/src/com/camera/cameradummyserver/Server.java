@@ -16,7 +16,7 @@ public class Server {
 		}
 	}
 	
-	public byte[] recieve() {
+	public byte[] receive() {
 		byte[] data = null;
 		
 		Socket socket = null;
@@ -30,7 +30,6 @@ public class Server {
 				dataStream.readFully(data);
 			}
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
 			if (socket != null) {
