@@ -1,7 +1,9 @@
 package com.robotvision.javaserver.utest;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.fail;
 
+import java.io.File;
 import java.io.IOException;
 
 import org.junit.Test;
@@ -24,6 +26,9 @@ public class UTestSuite01 {
 		try {
 			data = supporter.receive();
 			assertFalse("received data is null.", data == null);
+			
+			File picture = new File(supporter.savePicture("utruntemp"));
+			assertFalse("picture not exist.", !picture.exists());
 		} catch (IOException e) {
 			fail("receive data failed. " + e.getLocalizedMessage());
 		}

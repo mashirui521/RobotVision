@@ -12,4 +12,6 @@ public interface IServerSupporter {
 	
 	public byte[] receive() throws IOException;
 	
+	public String savePicture(String rootPath) throws IOException;
+	
 }

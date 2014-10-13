@@ -1,14 +1,19 @@
 package com.robotvision.javaserver;
 
 import java.io.DataInputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class ServerSupporter implements IServerSupporter{
 
 	private ServerSocket server = null;
 	private int port;
+	private byte[] data;
 	
 	public ServerSupporter(int port) {
 		this.port = port;
@@ -66,6 +71,35 @@ public class ServerSupporter implements IServerSupporter{
 			}
 		}
 
+		this.data = data;
 		return data;
+	}
+
+	@Override
+	public String savePicture(String rootPath) throws IOException {
+		String path = null;
+		
+		Date now = new Date();
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
+		String fileName = formatter.format(now) + ".jpg";
+		
+		File root = new File(rootPath);
+		if (!root.exists()) {
+			root.mkdirs();
+		}
+		
+		File file = new File(root, fileName);
+		FileOutputStream outputStream = new FileOutputStream(file);
+		try {
+			outputStream.write(this.data);
+			path = file.getAbsolutePath();
+			System.out.println("data saved in " + path);
+		} catch (IOException e) {
+			throw e;
+		} finally {
+			outputStream.close();
+		}
+		
+		return path;
 	}	
 }
