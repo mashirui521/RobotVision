@@ -10,8 +10,16 @@ public interface IServerSupporter {
 	
 	public void send();
 	
-	public byte[] receive() throws IOException;
+	public void receive() throws IOException;
+
+	public void adaptByteToRGB();
+
+	public int[] getR();
+
+	public int[] getG();
+
+	public int[] getB();
 	
-	public String savePicture(String rootPath) throws IOException;
+	//public String savePicture(String rootPath) throws IOException;
 	
 }

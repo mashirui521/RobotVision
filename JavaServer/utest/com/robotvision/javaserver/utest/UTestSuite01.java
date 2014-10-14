@@ -22,13 +22,15 @@ public class UTestSuite01 {
 			fail("start service failed. " + e.getLocalizedMessage());
 		}
 		
-		byte[] data = null;
 		try {
-			data = supporter.receive();
-			assertFalse("received data is null.", data == null);
+			supporter.receive();
+			assertFalse("received data is null.", 
+					supporter.getR() == null ||
+					supporter.getG() == null ||
+					supporter.getB() == null);
 			
-			File picture = new File(supporter.savePicture("utruntemp"));
-			assertFalse("picture not exist.", !picture.exists());
+//			File picture = new File(supporter.savePicture("utruntemp"));
+//			assertFalse("picture not exist.", !picture.exists());
 		} catch (IOException e) {
 			fail("receive data failed. " + e.getLocalizedMessage());
 		}
