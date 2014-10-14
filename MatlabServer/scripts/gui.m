@@ -95,9 +95,8 @@ function pushbutton_startReceive_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 hService = evalin('base', 'hService');
-mls_supporter_receive(hService);
-sPath = mls_supporter_save_picture(hService, fullfile(pwd, 'images'));
-imshow(sPath, 'Parent', handles.axes1);
+rgbData = mls_supporter_receive(hService);
+imshow(rgbData, 'Parent', handles.axes1);
 
 
 % --- Executes on button press in pushbutton_stopReceive.
