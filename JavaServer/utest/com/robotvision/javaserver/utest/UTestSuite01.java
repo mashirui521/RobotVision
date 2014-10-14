@@ -1,9 +1,7 @@
 package com.robotvision.javaserver.utest;
 
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.fail;
 
-import java.io.File;
 import java.io.IOException;
 
 import org.junit.Test;
@@ -17,28 +15,9 @@ public class UTestSuite01 {
 	public void UTest01() {
 		IServerSupporter supporter = new ServerSupporter(8888);
 		try {
-			supporter.startService();
+			System.out.println(supporter.receiveClientAddress());
 		} catch (IOException e) {
-			fail("start service failed. " + e.getLocalizedMessage());
-		}
-		
-		try {
-			supporter.receive();
-			assertFalse("received data is null.", 
-					supporter.getR() == null ||
-					supporter.getG() == null ||
-					supporter.getB() == null);
-			
-//			File picture = new File(supporter.savePicture("utruntemp"));
-//			assertFalse("picture not exist.", !picture.exists());
-		} catch (IOException e) {
-			fail("receive data failed. " + e.getLocalizedMessage());
-		}
-		
-		try {
-			supporter.stopService();
-		} catch (IOException e) {
-			fail("stop service failed. " + e.getLocalizedMessage());
+			fail("fail to receive ip: " + e.getLocalizedMessage());
 		}
 	}
 }

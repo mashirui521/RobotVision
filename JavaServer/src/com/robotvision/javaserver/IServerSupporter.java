@@ -1,16 +1,15 @@
 package com.robotvision.javaserver;
 
 import java.io.IOException;
+import java.net.UnknownHostException;
 
 public interface IServerSupporter {
 	
-	public void startService() throws IOException;
+	public void send(int data) throws UnknownHostException, IOException;
 	
-	public void stopService() throws IOException;
-	
-	public void send();
-	
-	public void receive() throws IOException;
+	public String receiveClientAddress() throws IOException;
+		
+	public void receivePicture() throws IOException;
 
 	public void adaptByteToRGB();
 
@@ -19,7 +18,5 @@ public interface IServerSupporter {
 	public int[] getG();
 
 	public int[] getB();
-	
-	//public String savePicture(String rootPath) throws IOException;
 	
 }
