@@ -22,7 +22,7 @@ function varargout = gui(varargin)
 
 % Edit the above text to modify the response to help gui
 
-% Last Modified by GUIDE v2.5 14-Oct-2014 01:01:31
+% Last Modified by GUIDE v2.5 14-Oct-2014 19:41:13
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -78,7 +78,9 @@ function pushbutton_startServer_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbutton_startServer (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-evalin('base', 'hService = mls_supporter_start_service(8888);');
+nPort = get(handles.edit_port, 'string');
+evalin('base', sprintf('hService = mls_supporter_start_service(%s);', nPort));
+set(handles.edit_port, 'style', 'text');
 
 
 % --- Executes on button press in pushbutton_stopServer.
@@ -87,6 +89,7 @@ function pushbutton_stopServer_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 evalin('base', 'mls_supporter_stop_service(hService);');
+set(handles.edit_port, 'style', 'edit');
 
 
 % --- Executes on button press in pushbutton_startReceive.
@@ -104,3 +107,33 @@ function pushbutton_stopReceive_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbutton_stopReceive (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+
+
+% --- Executes during object creation, after setting all properties.
+function edit_ipAdress_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to edit_ipAdress (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+set(hObject, 'string', char(java.net.Inet4Address.getLocalHost.getHostAddress));
+
+
+function edit_port_Callback(hObject, eventdata, handles)
+% hObject    handle to edit_port (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of edit_port as text
+%        str2double(get(hObject,'String')) returns contents of edit_port as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function edit_port_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to edit_port (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
