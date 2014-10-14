@@ -32,6 +32,7 @@ public class SocketSender extends AsyncTask<Void, Void, Void> {
 					socket.getOutputStream());
 			outputStream.writeInt(data.length);
 			outputStream.write(data);
+			outputStream.flush();
 		} catch (UnknownHostException e) {
 			Log.d("SocketSender", "UnknownHostException: " + e.getMessage());
 		} catch (IOException e) {

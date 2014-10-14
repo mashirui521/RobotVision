@@ -49,7 +49,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 		try {
 			Camera.Parameters parameters = mCamera.getParameters();
 			parameters.setPictureSize(640, 480);
-			parameters.setPictureFormat(ImageFormat.RGB_565);
+			parameters.setPictureFormat(ImageFormat.JPEG);
 			mCamera.setPreviewDisplay(mHolder);
 			mCamera.startPreview();
 		} catch (Exception e) {
