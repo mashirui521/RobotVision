@@ -1,6 +1,6 @@
 package com.robotvision.phoneclient;
 
-import com.camera.cameraclient.R;
+import com.robotvision.phoneclient.R;
 
 import android.app.Activity;
 import android.hardware.Camera;

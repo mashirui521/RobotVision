@@ -3,6 +3,7 @@ package com.robotvision.phoneclient;
 import java.io.IOException;
 
 import android.content.Context;
+import android.graphics.ImageFormat;
 import android.hardware.Camera;
 import android.hardware.Camera.PictureCallback;
 import android.util.Log;
@@ -46,6 +47,9 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 		}
 		
 		try {
+			Camera.Parameters parameters = mCamera.getParameters();
+			parameters.setPictureSize(640, 480);
+			parameters.setPictureFormat(ImageFormat.RGB_565);
 			mCamera.setPreviewDisplay(mHolder);
 			mCamera.startPreview();
 		} catch (Exception e) {

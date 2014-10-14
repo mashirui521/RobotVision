@@ -1,5 +1,5 @@
 /** Automatically generated file. DO NOT MODIFY */
-package com.camera.cameraclient;
+package com.robotvision.phoneclient;
 
 public final class BuildConfig {
     public final static boolean DEBUG = true;
