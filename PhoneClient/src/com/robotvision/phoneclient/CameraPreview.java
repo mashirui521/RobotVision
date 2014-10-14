@@ -19,12 +19,15 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 	private final int PIC_WIDTH = 640;
 	private final int PIC_HEIGHT = 480;
 	
+	private String ipAddress;
+	private int port;
+	
 	private PictureCallback mPicture = new PictureCallback() {
 
 		@Override
 		public void onPictureTaken(byte[] arg0, Camera arg1) {
 			try {
-				SocketSender sender = new SocketSender("192.168.0.101", 8888, 
+				SocketSender sender = new SocketSender(ipAddress, port, 
 						adaptDataToRGB(arg0));
 				sender.execute();
 			} catch (Exception e) {
@@ -35,7 +38,8 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 		}
 	};
 	
-	public CameraPreview(Context context, Camera camera) {
+	public CameraPreview(Context context, Camera camera, 
+			String ipAddress, int port) {
 		super(context);
 		mCamera = camera;
 		

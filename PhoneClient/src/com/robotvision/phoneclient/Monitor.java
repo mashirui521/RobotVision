@@ -14,23 +14,31 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 
 
-public class MainActivity extends Activity {
+public class Monitor extends Activity {
 
 	private Camera mCamera;
 	private CameraPreview mPreview;
 	
+	private String ipAddress;
+	private int port;
+	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_monitor);
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+        	ipAddress = extras.getString("ipAddress");
+        	port = extras.getInt("port");
+        }
                 
         try {
         	mCamera = Camera.open();
         } catch (Exception e) {
-        	Log.d("MainActivity", "Error opening camera: " + e.getMessage());
+        	Log.d("Monitor", "Error opening camera: " + e.getMessage());
         }
         
-        mPreview = new CameraPreview(this, mCamera);
+        mPreview = new CameraPreview(this, mCamera, ipAddress, port);
         FrameLayout previewLayout = (FrameLayout) findViewById(R.id.camera_preview);
         previewLayout.addView(mPreview);
         
