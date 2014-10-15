@@ -5,6 +5,8 @@ import java.net.UnknownHostException;
 
 public class ServerSupporter implements IServerSupporter{
 
+	private static ServerSupporter _supporter = null;
+	
 	private int port;
 	
 	private int clientPort;
@@ -16,9 +18,18 @@ public class ServerSupporter implements IServerSupporter{
 	private int[] G;
 	private int[] B;
 	
-	public ServerSupporter(int port) {
+	public static IServerSupporter getInstance(int port) {
+		if (_supporter != null) {
+			return _supporter;
+		} else {
+			return new ServerSupporter(port);
+		}
+	}
+	
+	private ServerSupporter(int port) {
 		this.port = port;
 	}
+	
 	
 	@Override
 	public void send(int data) throws UnknownHostException, IOException {
@@ -58,7 +69,6 @@ public class ServerSupporter implements IServerSupporter{
 			clientIpAddress = address;
 			clientPort = 0;
 		}
-		
 		
 		return address;
 	}

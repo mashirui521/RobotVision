@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class Receiver extends Thread implements Runnable {
+public class Receiver {
 	
 	private byte[] data;
 	private ServerSocket server;

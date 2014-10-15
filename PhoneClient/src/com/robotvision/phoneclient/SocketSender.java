@@ -28,8 +28,7 @@ public class SocketSender extends AsyncTask<Void, Void, Void> {
 		DataOutputStream outputStream = null;
 		try {
 			socket = new Socket(host, port);
-			outputStream = new DataOutputStream (
-					socket.getOutputStream());
+			outputStream = new DataOutputStream(socket.getOutputStream());
 			outputStream.writeInt(data.length);
 			outputStream.write(data);
 			outputStream.flush();

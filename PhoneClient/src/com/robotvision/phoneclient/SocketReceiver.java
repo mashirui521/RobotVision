@@ -8,22 +8,22 @@ import java.net.Socket;
 import android.os.AsyncTask;
 import android.util.Log;
 
-public class SocketReceiver extends AsyncTask<Void, Void, Void> {
+public class SocketReceiver extends AsyncTask<Void, Void, Integer> {
 
 	private ServerSocket server;
-
-	private int command;
 	private int port;
 
 	SocketReceiver (int port) {
 		this.port = port;
 	}
 
-	private void receiveData() {
+	@SuppressWarnings("finally")
+	private int receiveData() {
 
 		Socket socket = null;
 		DataInputStream stream = null;
-
+		int command = 0;
+		
 		try {
 			if (server == null) {
 				server = new ServerSocket(port);
@@ -66,17 +66,14 @@ public class SocketReceiver extends AsyncTask<Void, Void, Void> {
 				}
 			}
 
+			return command;
 		}
 	}
 
-	private int getCommand() {
-		return command;
-	}
-
 	@Override
-	protected Void doInBackground(Void... arg0) {
-		receiveData();
-		return null;
+	protected Integer doInBackground(Void... arg0) {
+		
+		return receiveData();
 	}
 
 }

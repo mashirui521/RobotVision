@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
-public class Sender extends Thread implements Runnable {
+public class Sender {
 	
 	private Socket socket;
 
@@ -27,10 +27,10 @@ public class Sender extends Thread implements Runnable {
 	
 	public void run() {
 		try {
-			DataOutputStream stream = (DataOutputStream) socket.getOutputStream();
+			DataOutputStream stream = new DataOutputStream(socket.getOutputStream());
 			stream.writeInt(data);
 			stream.flush();
-			System.out.println("data sent.");
+			System.out.println("command " + data + " sent.");
 		} catch (IOException e) {
 			e.printStackTrace();
 		} finally {
