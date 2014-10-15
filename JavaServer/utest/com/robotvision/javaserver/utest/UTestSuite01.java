@@ -3,13 +3,12 @@ package com.robotvision.javaserver.utest;
 import static org.junit.Assert.fail;
 
 import java.io.IOException;
-import java.net.UnknownHostException;
 
 import org.junit.Test;
 
-import com.robotvision.javaserver.Commands;
 import com.robotvision.javaserver.IServerSupporter;
 import com.robotvision.javaserver.ServerSupporter;
+import com.robotvision.javaserver.utils.Commands;
 
 public class UTestSuite01 {
 
@@ -25,11 +24,8 @@ public class UTestSuite01 {
 		
 		try {
 			supporter.send(Commands.LOGIN);
-		} catch (UnknownHostException e) {
-			fail("host unknown: " + e.getLocalizedMessage());
-		} catch (IOException e) {
-			fail("IOException in sending login command: " 
-					+ e.getLocalizedMessage());
+		} catch (Exception e) {
+			fail("fail to send login command: " + e.getLocalizedMessage());
 		}
 	}
 }

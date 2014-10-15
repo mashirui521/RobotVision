@@ -1,4 +1,4 @@
-package com.robotvision.javaserver;
+package com.robotvision.javaserver.utils;
 
 import java.io.DataInputStream;
 import java.io.IOException;

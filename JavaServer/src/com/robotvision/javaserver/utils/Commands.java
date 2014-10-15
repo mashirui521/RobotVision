@@ -1,4 +1,4 @@
-package com.robotvision.javaserver;
+package com.robotvision.javaserver.utils;
 
 public class Commands {
 	public static final int LOGIN = 101;

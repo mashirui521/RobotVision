@@ -1,7 +1,9 @@
 package com.robotvision.javaserver;
 
 import java.io.IOException;
-import java.net.UnknownHostException;
+
+import com.robotvision.javaserver.utils.Receiver;
+import com.robotvision.javaserver.utils.Sender;
 
 public class ServerSupporter implements IServerSupporter{
 
@@ -32,10 +34,9 @@ public class ServerSupporter implements IServerSupporter{
 	
 	
 	@Override
-	public void send(int data) throws UnknownHostException, IOException {
+	public void send(int data) throws Exception {
 		if (clientIpAddress == null) {
-			System.out.println("client ip address is empty. return.");
-			return;
+			throw new Exception("client ipaddress is empty.");
 		}
 		
 		Sender sender = new Sender(clientIpAddress, clientPort);

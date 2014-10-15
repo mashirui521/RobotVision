@@ -1,11 +1,10 @@
 package com.robotvision.javaserver;
 
 import java.io.IOException;
-import java.net.UnknownHostException;
 
 public interface IServerSupporter {
 	
-	public void send(int data) throws UnknownHostException, IOException;
+	public void send(int data) throws Exception;
 	
 	public String receiveClientAddress() throws IOException;
 		
