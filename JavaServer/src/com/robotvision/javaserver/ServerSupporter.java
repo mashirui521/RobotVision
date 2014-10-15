@@ -9,6 +9,7 @@ public class ServerSupporter implements IServerSupporter{
 	
 	private int clientPort;
 	private String clientIpAddress;
+	
 	private byte[] data;
 	
 	private int[] R;
@@ -47,13 +48,29 @@ public class ServerSupporter implements IServerSupporter{
 		receiver.init();
 		receiver.run();
 		
-		String address = receiver.getData().toString();
+		String address = new String(receiver.getData());
 		
-		port = Integer.parseInt(address.substring(address.indexOf(":") + 1, 
-				address.length()));
-		clientIpAddress = address.substring(0, address.indexOf(":") - 1);
+		if (address.contains(":")) {
+			clientPort = Integer.parseInt(address.substring(address.indexOf(":") + 1, 
+					address.length()));
+			clientIpAddress = address.substring(0, address.indexOf(":"));
+		}else {
+			clientIpAddress = address;
+			clientPort = 0;
+		}
+		
 		
 		return address;
+	}
+	
+	@Override
+	public int getClientPort() {
+		return clientPort;
+	}
+
+	@Override
+	public String getClientIpAddress() {
+		return clientIpAddress;
 	}
 	
 	@Override

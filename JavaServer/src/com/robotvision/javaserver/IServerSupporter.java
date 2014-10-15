@@ -18,5 +18,9 @@ public interface IServerSupporter {
 	public int[] getG();
 
 	public int[] getB();
+
+	public int getClientPort();
+	
+	public String getClientIpAddress();
 	
 }

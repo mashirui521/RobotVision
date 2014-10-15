@@ -16,6 +16,8 @@ public class UTestSuite01 {
 		IServerSupporter supporter = new ServerSupporter(8888);
 		try {
 			System.out.println(supporter.receiveClientAddress());
+			System.out.println(supporter.getClientIpAddress());
+			System.out.println(supporter.getClientPort());
 		} catch (IOException e) {
 			fail("fail to receive ip: " + e.getLocalizedMessage());
 		}

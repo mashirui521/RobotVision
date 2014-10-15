@@ -1,5 +1,15 @@
 package com.robotvision.phoneclient;
 
+import java.net.Inet4Address;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
+import java.net.UnknownHostException;
+import java.util.Collections;
+import java.util.List;
+
+import org.apache.http.conn.util.InetAddressUtils;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
@@ -16,6 +26,8 @@ public class LogInServer extends Activity {
 	
 	private String ipAddress;
 	private int port;
+	
+	private final int CLIENT_PORT = 8888;
 	
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +57,8 @@ public class LogInServer extends Activity {
 					}
 					
 					port = Integer.parseInt(sPort);
-					startMonitor();
+					
+					sendIPAddress();
 					
 				} catch (Exception e) {
 					Log.d("LogInServer", e.getMessage());
@@ -54,6 +67,48 @@ public class LogInServer extends Activity {
         	
         });
     }
+	
+	private void sendIPAddress() throws UnknownHostException, SocketException {
+		
+		String address = getIPAddress();
+		if (address == null) {
+			new Exception("address is null.");
+		}
+		
+		SocketSender sender = new SocketSender(ipAddress, port, 
+				address.getBytes());
+		sender.execute();
+	}
+	
+	private void login() {
+		// TODO: to implement
+		// startMonitor();
+	}
+	
+	private String getIPAddress() throws UnknownHostException, SocketException {
+		
+		String clientIpAddress = null;
+		List<NetworkInterface> interfaces = Collections.list(NetworkInterface.getNetworkInterfaces());
+        for (NetworkInterface intf : interfaces) {
+            List<InetAddress> addrs = Collections.list(intf.getInetAddresses());
+            for (InetAddress addr : addrs) {
+                if (!addr.isLoopbackAddress()) {
+                    String sAddr = addr.getHostAddress();
+                    clientIpAddress = sAddr;
+//                    boolean isIPv4 = InetAddressUtils.isIPv4Address(sAddr); 
+//                    if (isIPv4) {
+//                    	clientIpAddress = sAddr;
+//                    }
+                }
+            }
+        }
+		
+        if (clientIpAddress != null) {
+        	return clientIpAddress + ":" + CLIENT_PORT;
+        } else {
+        	return null;
+        }
+	}
 	
 	private void alert(String text) {
 		AlertDialog ad = new AlertDialog.Builder(this).create();  

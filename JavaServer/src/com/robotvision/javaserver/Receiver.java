@@ -27,7 +27,7 @@ public class Receiver extends Thread implements Runnable {
 		DataInputStream stream = null;
 		try {
 			socket = server.accept();
-			stream = (DataInputStream) socket.getInputStream();
+			stream = new DataInputStream(socket.getInputStream());
 			data = new byte[stream.readInt()];
 			stream.readFully(data);
 		} catch (IOException e) {
