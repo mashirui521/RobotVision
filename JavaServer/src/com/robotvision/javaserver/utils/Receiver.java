@@ -31,7 +31,7 @@ public class Receiver {
 			data = new byte[stream.readInt()];
 			stream.readFully(data);
 		} catch (IOException e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 		} finally {
 			if (stream != null) {
 				try {

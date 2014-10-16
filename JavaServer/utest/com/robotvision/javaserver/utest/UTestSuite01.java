@@ -20,6 +20,8 @@ public class UTestSuite01 {
 		try {
 			String address = supporter.receiveClientAddress();
 			System.out.println(address);
+			System.out.println("client ip: " + supporter.getClientIpAddress());
+			System.out.println("client port: " + supporter.getClientPort());
 		} catch (IOException e) {
 			fail("fail to receive ip: " + e.getLocalizedMessage());
 		}
@@ -35,5 +37,10 @@ public class UTestSuite01 {
 		} catch (Exception e) {
 			fail("faile to receive picture: " + e.getLocalizedMessage());
 		}
+		
+		supporter.adaptByteToRGB();
+		supporter.getR();
+		supporter.getG();
+		supporter.getB();
 	}
 }
