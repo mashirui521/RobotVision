@@ -35,10 +35,10 @@ end
 
 bShow = false;
 if isfield(stOption, 'bShow')
-    bShow = true;
+    bShow = stOption.bShow;
 end
 
-hParent = figure;
+hParent = '';
 if bShow
     if isfield(stOption, 'hParent')
         hParent = stOption.hParent;
@@ -50,7 +50,12 @@ mPicture = mls_supporter_receivePicture(hSupporter, stOption.sFormat);
 
 %% show picture
 if bShow
-    imshow(mPicture, 'Parent', hParent);
+    if isempty(hParent)
+        figure;
+        imshow(mPicture);
+    else
+        imshow(mPicture, 'Parent', hParent);
+    end
 end
 
 return;
