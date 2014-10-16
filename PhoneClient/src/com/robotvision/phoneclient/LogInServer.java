@@ -51,10 +51,10 @@ public class LogInServer extends Activity {
 					String sPort = textView_portNumber.getText().toString();
 
 					if (ipAddress.isEmpty()) {
-						alert("IP adress cannot be empty.");
+						alert("Empty IP address is not allowed.");
 						return;
 					} else if (sPort.isEmpty()) {
-						alert("Port cannot be empty.");
+						alert("Empty port number is not allowed.");
 						return;
 					}
 
