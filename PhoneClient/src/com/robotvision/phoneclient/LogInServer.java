@@ -103,7 +103,8 @@ public class LogInServer extends Activity {
 		final NetworkInfo wlan = connMgr.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
 		
 		if (!wlan.isAvailable()) {
-//			TODO: error handling
+			alert("Please connect to wifi.");
+			return null;
 		}
 		
 		WifiManager wifiMgr = (WifiManager) this.getSystemService(WIFI_SERVICE);
