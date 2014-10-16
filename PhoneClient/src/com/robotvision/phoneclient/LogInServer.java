@@ -1,8 +1,8 @@
 package com.robotvision.phoneclient;
 
-import java.net.Socket;
 import java.net.SocketException;
 import java.net.UnknownHostException;
+import java.nio.ByteBuffer;
 import java.util.concurrent.ExecutionException;
 
 import android.app.Activity;
@@ -80,7 +80,7 @@ public class LogInServer extends Activity {
 		int nPort = Integer.parseInt(sPort);
 		
 		if (!checkServer(sIpAddress, nPort)) {
-			alert("Server is not available.");
+			alert("server not available.");
 			return;
 		}
 		
@@ -91,16 +91,6 @@ public class LogInServer extends Activity {
 		login();
 	}
 	
-	private boolean checkServer(String ipAddress, int port) {
-		try {
-			Socket socket = new Socket(ipAddress, port);
-			socket.close();
-			return true;
-		} catch (Exception e) {
-			return false;
-		}
-	}
-	
 	private boolean checkWiFi() {
 		ConnectivityManager connMgr = 
 				(ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -108,6 +98,13 @@ public class LogInServer extends Activity {
 		final NetworkInfo wifi = connMgr.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
 		
 		return wifi.isAvailable();
+	}
+	
+	private boolean checkServer(String sIpAddress, int nPort) 
+			throws InterruptedException, ExecutionException {
+		SocketSender sender = new SocketSender(sIpAddress, nPort, 
+				ByteBuffer.allocate(4).putInt(Commands.TEST_CONNECTION).array());
+		return sender.execute(true).get();
 	}
 
 	private void sendIPAddress() throws UnknownHostException, SocketException {
@@ -119,7 +116,7 @@ public class LogInServer extends Activity {
 
 		SocketSender sender = new SocketSender(_ipAddress, _port, 
 				address.getBytes());
-		sender.execute();
+		sender.execute(false);
 	}
 
 	private void login() throws InterruptedException, ExecutionException {

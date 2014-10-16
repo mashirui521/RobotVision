@@ -4,6 +4,8 @@ import java.io.IOException;
 
 public interface IServerSupporter {
 	
+	public void findClient();
+	
 	public void send(int data) throws Exception;
 	
 	public String receiveClientAddress() throws IOException;

@@ -32,6 +32,18 @@ public class ServerSupporter implements IServerSupporter{
 		this.port = port;
 	}
 	
+	@Override
+	public void findClient() {
+		try {
+			Receiver receiver = new Receiver(port);
+			receiver.init();
+			receiver.run();
+		} catch (Exception e) {
+
+		}
+		
+		// dummy receiver, just for server checking on client side;
+	}
 	
 	@Override
 	public void send(int data) throws Exception {

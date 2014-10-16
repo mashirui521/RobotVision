@@ -14,26 +14,26 @@ import android.view.SurfaceView;
 
 public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback {
 
-	private SurfaceHolder mHolder;
-	private Camera mCamera;
+	private SurfaceHolder _mHolder;
+	private Camera _mCamera;
 	private final int PIC_WIDTH = 640;
 	private final int PIC_HEIGHT = 480;
 	
-	private String ipAddress;
-	private int port;
+	private String _ipAddress;
+	private int _port;
 	
 	private PictureCallback mPicture = new PictureCallback() {
 
 		@Override
 		public void onPictureTaken(byte[] arg0, Camera arg1) {
 			try {
-				SocketSender sender = new SocketSender(ipAddress, port, 
+				SocketSender sender = new SocketSender(_ipAddress, _port, 
 						adaptDataToRGB(arg0));
-				sender.execute();
+				sender.execute(false);
 			} catch (Exception e) {
 				Log.d("CameraPreview", "fail to send picture data: " + e.getMessage());
 			} finally {
-				mCamera.startPreview();
+				_mCamera.startPreview();
 			}
 		}
 	};
@@ -41,31 +41,34 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 	public CameraPreview(Context context, Camera camera, 
 			String ipAddress, int port) {
 		super(context);
-		mCamera = camera;
+		_mCamera = camera;
 		
-		mHolder = getHolder();
-		mHolder.addCallback(this);
+		_mHolder = getHolder();
+		_mHolder.addCallback(this);
+		
+		_ipAddress = ipAddress;
+		_port = port;
 	}
 
 	@Override
 	public void surfaceChanged(SurfaceHolder holder, int format, int width,
 			int height) {
-		if (mHolder.getSurface() == null) {
+		if (_mHolder.getSurface() == null) {
 			return;
 		}
 		
 		try {
-			mCamera.stopPreview();
+			_mCamera.stopPreview();
 		} catch (Exception e) {
 			
 		}
 		
 		try {
-			Camera.Parameters parameters = mCamera.getParameters();
+			Camera.Parameters parameters = _mCamera.getParameters();
 			parameters.setPictureSize(PIC_WIDTH, PIC_HEIGHT);
 			parameters.setPictureFormat(ImageFormat.JPEG);
-			mCamera.setPreviewDisplay(mHolder);
-			mCamera.startPreview();
+			_mCamera.setPreviewDisplay(_mHolder);
+			_mCamera.startPreview();
 		} catch (Exception e) {
 			Log.d("CameraPreview", "Error starting camera preview: " + e.getMessage());
 		}
@@ -74,8 +77,8 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 	@Override
 	public void surfaceCreated(SurfaceHolder holder) {
 		try {
-			mCamera.setPreviewDisplay(holder);
-			mCamera.startPreview();
+			_mCamera.setPreviewDisplay(holder);
+			_mCamera.startPreview();
 		} catch (IOException e) {
 			Log.d("CameraPreview", "Error setting camera preview: " + e.getMessage());
 		}
@@ -83,7 +86,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 
 	@Override
 	public void surfaceDestroyed(SurfaceHolder holder) {
-		mCamera.release();
+		_mCamera.release();
 	}
 	
 	public PictureCallback getPicture() {

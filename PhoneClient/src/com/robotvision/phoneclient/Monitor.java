@@ -16,11 +16,11 @@ import android.widget.FrameLayout;
 
 public class Monitor extends Activity {
 
-	private Camera mCamera;
-	private CameraPreview mPreview;
+	private Camera _mCamera;
+	private CameraPreview _mPreview;
 	
-	private String ipAddress;
-	private int port;
+	private String _ipAddress;
+	private int _port;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,26 +28,26 @@ public class Monitor extends Activity {
         setContentView(R.layout.activity_monitor);
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-        	ipAddress = extras.getString("ipAddress");
-        	port = extras.getInt("port");
+        	_ipAddress = extras.getString("ipAddress");
+        	_port = extras.getInt("port");
         }
                 
         try {
-        	mCamera = Camera.open();
+        	_mCamera = Camera.open();
         } catch (Exception e) {
         	Log.d("Monitor", "Error opening camera: " + e.getMessage());
         }
         
-        mPreview = new CameraPreview(this, mCamera, ipAddress, port);
+        _mPreview = new CameraPreview(this, _mCamera, _ipAddress, _port);
         FrameLayout previewLayout = (FrameLayout) findViewById(R.id.camera_preview);
-        previewLayout.addView(mPreview);
+        previewLayout.addView(_mPreview);
         
         Button captureButton = (Button) findViewById(R.id.button_capture);
         captureButton.setOnClickListener(new OnClickListener () {
 
 			@Override
 			public void onClick(View arg0) {
-				mCamera.takePicture(null, null, mPreview.getPicture());
+				_mCamera.takePicture(null, null, _mPreview.getPicture());
 			}
         	
         });

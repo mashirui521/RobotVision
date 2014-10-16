@@ -8,29 +8,29 @@ import java.net.UnknownHostException;
 import android.os.AsyncTask;
 import android.util.Log;
 
-public class SocketSender extends AsyncTask<Void, Void, Void> {
-	private byte[] data;
-	private String host;
-	private int port;
+public class SocketSender extends AsyncTask<Boolean, Void, Boolean> {
+	private byte[] _data;
+	private String _host;
+	private int _port;
 	
 	SocketSender (String host, int port, byte[] data) {
-		this.data = data;
-		this.host = host;
-		this.port = port;
+		this._data = data;
+		this._host = host;
+		this._port = port;
 	}
 	
 	private void sendData() {
-		if (data == null) {
+		if (_data == null) {
 			return;
 		}
 		
 		Socket socket = null;
 		DataOutputStream outputStream = null;
 		try {
-			socket = new Socket(host, port);
+			socket = new Socket(_host, _port);
 			outputStream = new DataOutputStream(socket.getOutputStream());
-			outputStream.writeInt(data.length);
-			outputStream.write(data);
+			outputStream.writeInt(_data.length);
+			outputStream.write(_data);
 			outputStream.flush();
 		} catch (UnknownHostException e) {
 			Log.d("SocketSender", "UnknownHostException: " + e.getMessage());
@@ -57,10 +57,32 @@ public class SocketSender extends AsyncTask<Void, Void, Void> {
 		}
 	}
 	
+	
+	private void checkServer() throws UnknownHostException, IOException {
+		Socket socket = new Socket(_host, _port);
+		socket.close();
+	}
+	
 	@Override
-	protected Void doInBackground(Void... arg0) {
-		sendData();
-		return null;
+	protected Boolean doInBackground(Boolean... arg0) {
+		
+		boolean result = false;
+		
+		if (!arg0[0]) {
+			sendData();
+			result = true;
+		} else {
+			try {
+				checkServer();
+				result = true;
+			} catch (UnknownHostException e) {
+				result = false;
+			} catch (IOException e) {
+				result = false;
+			}
+		}
+		
+		return result;
 	}
 
 }
