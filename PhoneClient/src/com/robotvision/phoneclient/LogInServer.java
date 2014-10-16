@@ -1,5 +1,6 @@
 package com.robotvision.phoneclient;
 
+import java.net.Socket;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.concurrent.ExecutionException;
@@ -24,51 +25,89 @@ import android.widget.TextView;
 
 public class LogInServer extends Activity {
 
-	private String ipAddress;
-	private int port;
+	private String _ipAddress;
+	private int _port;
 
 	private final int CLIENT_PORT = 8888;
 	
-	private Button buttonLogin;
+	private Button _buttonLogin;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_loginserver);
 
-		buttonLogin = (Button) findViewById(R.id.button_login);
-		buttonLogin.setOnClickListener(new OnClickListener() {
+		_buttonLogin = (Button) findViewById(R.id.button_login);
+		_buttonLogin.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
-				TextView textView_ipAddress = 
-						(TextView) findViewById(R.id.editText_ipAddress);
-				TextView textView_portNumber = 
-						(TextView) findViewById(R.id.editText_portNumber);
-
 				try {
-					ipAddress = textView_ipAddress.getText().toString();
-					String sPort = textView_portNumber.getText().toString();
-
-					if (ipAddress.isEmpty()) {
-						alert("Empty IP address is not allowed.");
-						return;
-					} else if (sPort.isEmpty()) {
-						alert("Empty port number is not allowed.");
-						return;
-					}
-
-					port = Integer.parseInt(sPort);
-
-					sendIPAddress();
-					login();
-
+					couple();
 				} catch (Exception e) {
 					Log.d("LogInServer", e.getMessage());
 				}
 			}
 
 		});
+	}
+	
+	private void couple() throws UnknownHostException, SocketException, 
+								InterruptedException, ExecutionException {
+		
+		if (!checkWiFi()) {
+			alert("Please connect to wifi.");
+			return;
+		}
+		
+		
+		TextView textView_ipAddress = 
+				(TextView) findViewById(R.id.editText_ipAddress);
+		TextView textView_portNumber = 
+				(TextView) findViewById(R.id.editText_portNumber);
+		
+		String sIpAddress = textView_ipAddress.getText().toString();
+		String sPort = textView_portNumber.getText().toString();
+
+		if (sIpAddress.isEmpty()) {
+			alert("Empty IP address is not allowed.");
+			return;
+		} else if (sPort.isEmpty()) {
+			alert("Empty port number is not allowed.");
+			return;
+		}
+		
+		int nPort = Integer.parseInt(sPort);
+		
+		if (!checkServer(sIpAddress, nPort)) {
+			alert("Server is not available.");
+			return;
+		}
+		
+		_ipAddress = sIpAddress;
+		_port = Integer.parseInt(sPort);
+
+		sendIPAddress();
+		login();
+	}
+	
+	private boolean checkServer(String ipAddress, int port) {
+		try {
+			Socket socket = new Socket(ipAddress, port);
+			socket.close();
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
+	}
+	
+	private boolean checkWiFi() {
+		ConnectivityManager connMgr = 
+				(ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
+		
+		final NetworkInfo wifi = connMgr.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+		
+		return wifi.isAvailable();
 	}
 
 	private void sendIPAddress() throws UnknownHostException, SocketException {
@@ -78,7 +117,7 @@ public class LogInServer extends Activity {
 			new Exception("address is null.");
 		}
 
-		SocketSender sender = new SocketSender(ipAddress, port, 
+		SocketSender sender = new SocketSender(_ipAddress, _port, 
 				address.getBytes());
 		sender.execute();
 	}
@@ -96,16 +135,6 @@ public class LogInServer extends Activity {
 	private String getIPAddress() throws UnknownHostException, SocketException {
 
 		String clientIpAddress = null;
-		
-		ConnectivityManager connMgr = 
-				(ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
-		
-		final NetworkInfo wlan = connMgr.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-		
-		if (!wlan.isAvailable()) {
-			alert("Please connect to wifi.");
-			return null;
-		}
 		
 		WifiManager wifiMgr = (WifiManager) this.getSystemService(WIFI_SERVICE);
 		WifiInfo wifiInfo = wifiMgr.getConnectionInfo();
@@ -127,13 +156,13 @@ public class LogInServer extends Activity {
 	}
 
 	private void startMonitor() {
-		if (ipAddress.isEmpty()) {
+		if (_ipAddress.isEmpty()) {
 			return;
 		}
 
 		Intent intent = new Intent(this, Monitor.class);
-		intent.putExtra("ipAddress", ipAddress);
-		intent.putExtra("port", port);
+		intent.putExtra("ipAddress", _ipAddress);
+		intent.putExtra("port", _port);
 		startActivity(intent);
 	}
 

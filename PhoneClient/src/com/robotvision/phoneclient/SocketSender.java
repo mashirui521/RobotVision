@@ -56,7 +56,7 @@ public class SocketSender extends AsyncTask<Void, Void, Void> {
 
 		}
 	}
-
+	
 	@Override
 	protected Void doInBackground(Void... arg0) {
 		sendData();
