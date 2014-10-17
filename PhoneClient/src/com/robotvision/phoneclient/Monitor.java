@@ -5,7 +5,6 @@ import java.util.concurrent.ExecutionException;
 import android.app.Activity;
 import android.hardware.Camera;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -52,28 +51,39 @@ public class Monitor extends Activity {
 
 			@Override
 			public void onClick(View arg0) {
+				
 				sendCameraAvailable();
-				listenCapture();
+				runCapture();
+				
 			}
         	
         });
     }
     
-    private void listenCapture() {
+    private void runCapture() {
+    	while (listenCapture()) {
+    		_commandHandler.capture();
+    		sendCameraAvailable();
+    	}
+    }
+    
+    private boolean listenCapture() {
+    	boolean capture = false;
     	
     	SocketReceiver receiver = new SocketReceiver(CLIENT_PORT);
     	try {
 			int command = receiver.execute().get();
-			if (command == Commands.REQUEER_PICTURE) {
-				_commandHandler.capture();
-			}
+			capture = command == Commands.REQUEER_PICTURE;
 		} catch (InterruptedException e) {
 			
 		} catch (ExecutionException e) {
 			
 		}
     	
+    	return capture;
+    	
     }
+    
     
     private void sendCameraAvailable() {
     	SocketSender sender = new SocketSender(_ipAddress, _port, 

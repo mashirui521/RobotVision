@@ -33,10 +33,11 @@ public class UTestSuite01 {
 		}
 		
 		try {
-			while (supporter.receiveCameraAvailable()) {
+			if (supporter.receiveCameraAvailable()) {
 				supporter.send(Commands.CAPTURE_PICTURE);
 				supporter.receivePicture();
 				System.out.println("captured");
+				supporter.send(Commands.STOP_CAPTURE);
 			}
 		} catch (Exception e) {
 			fail("fail to capture: " + e.getMessage());
