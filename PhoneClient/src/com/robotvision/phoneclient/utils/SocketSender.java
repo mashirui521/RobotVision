@@ -1,9 +1,10 @@
-package com.robotvision.phoneclient;
+package com.robotvision.phoneclient.utils;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.nio.ByteBuffer;
 
 import android.os.AsyncTask;
 import android.util.Log;
@@ -13,10 +14,16 @@ public class SocketSender extends AsyncTask<Boolean, Void, Boolean> {
 	private String _host;
 	private int _port;
 	
-	SocketSender (String host, int port, byte[] data) {
+	public SocketSender (String host, int port, byte[] data) {
 		this._data = data;
 		this._host = host;
 		this._port = port;
+	}
+	
+	public SocketSender (String host, int port, int data) {
+		this._host = host;
+		this._port = port;
+		this._data = ByteBuffer.allocate(4).putInt(data).array();
 	}
 	
 	private void sendData() {

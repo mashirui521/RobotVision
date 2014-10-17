@@ -33,9 +33,13 @@ public class UTestSuite01 {
 		}
 		
 		try {
-			supporter.receivePicture();
+			while (supporter.receiveCameraAvailable()) {
+				supporter.send(Commands.CAPTURE_PICTURE);
+				supporter.receivePicture();
+				System.out.println("captured");
+			}
 		} catch (Exception e) {
-			fail("faile to receive picture: " + e.getLocalizedMessage());
+			fail("fail to capture: " + e.getMessage());
 		}
 		
 		supporter.adaptByteToRGB();

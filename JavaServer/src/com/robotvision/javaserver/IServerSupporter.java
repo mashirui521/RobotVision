@@ -11,6 +11,8 @@ public interface IServerSupporter {
 	public String receiveClientAddress() throws IOException;
 		
 	public void receivePicture() throws IOException;
+	
+	public boolean receiveCameraAvailable() throws IOException;
 
 	public void adaptByteToRGB();
 

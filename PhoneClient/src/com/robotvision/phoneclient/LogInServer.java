@@ -5,6 +5,10 @@ import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
 import java.util.concurrent.ExecutionException;
 
+import com.robotvision.phoneclient.utils.Commands;
+import com.robotvision.phoneclient.utils.SocketReceiver;
+import com.robotvision.phoneclient.utils.SocketSender;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -160,6 +164,7 @@ public class LogInServer extends Activity {
 		Intent intent = new Intent(this, Monitor.class);
 		intent.putExtra("ipAddress", _ipAddress);
 		intent.putExtra("port", _port);
+		intent.putExtra("CLIENT_PORT", CLIENT_PORT);
 		startActivity(intent);
 	}
 

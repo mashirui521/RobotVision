@@ -1,4 +1,4 @@
-package com.robotvision.phoneclient;
+package com.robotvision.phoneclient.utils;
 
 import java.io.DataInputStream;
 import java.io.IOException;
@@ -13,7 +13,7 @@ public class SocketReceiver extends AsyncTask<Void, Void, Integer> {
 	private ServerSocket _server;
 	private int _port;
 
-	SocketReceiver (int port) {
+	public SocketReceiver (int port) {
 		this._port = port;
 	}
 

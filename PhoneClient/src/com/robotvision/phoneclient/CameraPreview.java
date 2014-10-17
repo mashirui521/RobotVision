@@ -2,6 +2,8 @@ package com.robotvision.phoneclient;
 
 import java.io.IOException;
 
+import com.robotvision.phoneclient.utils.SocketSender;
+
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -26,6 +28,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 
 		@Override
 		public void onPictureTaken(byte[] arg0, Camera arg1) {
+			_mCamera.stopPreview();
 			try {
 				SocketSender sender = new SocketSender(_ipAddress, _port, 
 						adaptDataToRGB(arg0));

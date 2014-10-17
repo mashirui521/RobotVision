@@ -2,6 +2,7 @@ package com.robotvision.javaserver;
 
 import java.io.IOException;
 
+import com.robotvision.javaserver.utils.Commands;
 import com.robotvision.javaserver.utils.Receiver;
 import com.robotvision.javaserver.utils.Sender;
 
@@ -84,6 +85,19 @@ public class ServerSupporter implements IServerSupporter{
 		}
 		
 		return address;
+	}
+	
+	@Override
+	public boolean receiveCameraAvailable() throws IOException {
+		Receiver receiver = new Receiver(port);
+		receiver.init();
+		receiver.run(); 
+		byte[] data = receiver.getData();
+		int command = data[3] & 0xFF |
+	            (data[2] & 0xFF) << 8 |
+	            (data[1] & 0xFF) << 16 |
+	            (data[0] & 0xFF) << 24;
+		return command == Commands.CAMERA_AVAILABLE;
 	}
 	
 	@Override
