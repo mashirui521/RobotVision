@@ -46,7 +46,11 @@ if bShow
 end
 
 %% get picture from client
-mPicture = mls_supporter_receivePicture(hSupporter, stOption.sFormat);
+if mls_supporter_receiveCameraAvailable(hSupporter)
+    hSupporter.send(...
+        com.robotvision.javaserver.utils.Commands.CAPTURE_PICTURE);
+    mPicture = mls_supporter_receivePicture(hSupporter, stOption.sFormat);
+end
 
 %% show picture
 if bShow
