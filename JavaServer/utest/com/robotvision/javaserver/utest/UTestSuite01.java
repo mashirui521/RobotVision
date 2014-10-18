@@ -43,16 +43,30 @@ public class UTestSuite01 {
 			// check camera availability
 			if (supporter.receiveCameraAvailable()) {
 				
-				// send capture command
-				System.out.println("client camera is available.");
-				System.out.print("sending capture picture command...");
-				supporter.send(Commands.CAPTURE_PICTURE);
-				System.out.println("...OK");
-				
-				// waiting for picture
-				System.out.print("getting picture...");
-				supporter.receivePicture();
-				System.out.println("...captured");
+				// get picture twice
+				for (int i = 0; i < 2; i++) {
+					// send capture command
+					System.out.println("client camera is available.");
+					System.out.print("sending capture picture command...");
+					supporter.send(Commands.CAPTURE_PICTURE);
+					System.out.println("...OK");
+
+					// waiting for picture
+					System.out.print("getting picture...");
+					supporter.receivePicture();
+					System.out.println("...captured");
+
+					// adapt picture to RGB
+					supporter.adaptByteToRGB();
+					int[] R = supporter.getR();
+					int[] G = supporter.getG();
+					int[] B = supporter.getB();
+
+					// check the received picture data, the picture size should be 640*480
+					assertEquals("invalid R.", 307200, R.length);
+					assertEquals("invalid G.", 307200, G.length);
+					assertEquals("invalid B.", 307200, B.length);
+				}
 			}
 		} catch (Exception e) {
 			System.out.println("...FAIL");
@@ -69,15 +83,5 @@ public class UTestSuite01 {
 			fail("fail to stop caputre: " + e.getMessage());
 		}
 		
-		// adapt picture to RGB
-		supporter.adaptByteToRGB();
-		int[] R = supporter.getR();
-		int[] G = supporter.getG();
-		int[] B = supporter.getB();
-		
-		// check the received picture data, the picture size should be 640*480
-		assertEquals("invalid R.", 307200, R.length);
-		assertEquals("invalid G.", 307200, G.length);
-		assertEquals("invalid B.", 307200, B.length);
 	}
 }

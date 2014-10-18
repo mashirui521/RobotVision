@@ -63,9 +63,23 @@ public class Monitor extends Activity {
     
     private void runCapture() {
     	
-    	if (listenCapture()) {
-    		new CapturePictureTask (_ipAddress, _port).execute(_camera);
-    	}
+    	new Thread( new Runnable() {
+
+			@Override
+			public void run() {
+				while (listenCapture()) {
+		    		new CapturePictureTask (_ipAddress, _port).execute(_camera);
+		    		try {
+		    			// The sleep time should be adjusted
+						Thread.sleep(500);
+					} catch (InterruptedException e) {
+						
+					}
+		    	}
+			}
+    		
+    	}).start();
+    	
     }
 
     
