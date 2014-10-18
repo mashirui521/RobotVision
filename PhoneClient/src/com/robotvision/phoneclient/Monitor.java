@@ -5,9 +5,9 @@ import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.hardware.Camera;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -51,9 +51,6 @@ public class Monitor extends Activity {
 				//sendCameraAvailable();
 			}
 			
-			_captureButton.setText("Capture");
-			_start = true;
-			return;
 		}
 
 	});
@@ -110,11 +107,11 @@ public class Monitor extends Activity {
     		int command = new SocketReceiver(CLIENT_PORT).execute().get();				
     		capture = command == Commands.CAPTURE_PICTURE;
     	} catch (InterruptedException e) {
-    		Log.d("Monitor", e.getMessage());
+    		alert(e.getMessage());
     	} catch (ExecutionException e) {
-    		Log.d("Monitor", e.getMessage());
+    		alert(e.getMessage());
     	} catch (IOException e) {
-    		Log.d("Monitor", e.getMessage());
+    		alert(e.getMessage());
     	}
     	
     	return capture;
@@ -147,11 +144,19 @@ public class Monitor extends Activity {
             FrameLayout previewLayout = (FrameLayout) findViewById(R.id.camera_preview);
             previewLayout.addView(_mPreview);
         } catch (Exception e) {
-        	Log.d("Monitor", "Error opening camera: " + e.getMessage());
+        	alert("Error opening camera: " + e.getMessage());
         }
         
     }
 
+    
+    private void alert(String text) {
+		AlertDialog ad = new AlertDialog.Builder(this).create();  
+		ad.setCancelable(true);  
+		ad.setMessage(text);
+		ad.show();
+	}
+        
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
