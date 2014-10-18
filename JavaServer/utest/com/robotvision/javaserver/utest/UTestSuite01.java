@@ -20,8 +20,11 @@ public class UTestSuite01 {
 	public void UTest01() {
 		IServerSupporter supporter = ServerSupporter.getInstance(8888);
 		// find client
-		supporter.findClient();
-		
+		try {
+			supporter.findClient();
+		} catch (IOException e) {
+			fail("fail to invoke findClient(): " + e.getMessage());
+		}
 		// get client ip and port number
 		try {
 			supporter.receiveClientAddress();
