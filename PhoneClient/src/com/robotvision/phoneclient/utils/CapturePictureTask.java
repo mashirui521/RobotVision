@@ -3,6 +3,7 @@ package com.robotvision.phoneclient.utils;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.hardware.Camera;
 import android.hardware.Camera.PictureCallback;
 import android.os.AsyncTask;
@@ -42,13 +43,12 @@ public class CapturePictureTask extends AsyncTask<Camera, Void, Void> implements
 		Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
 		int[] rgbIntData = new int[PIC_WIDTH * PIC_HEIGHT];
 		bitmap.getPixels(rgbIntData, 0, PIC_WIDTH, 0, 0, PIC_WIDTH, PIC_HEIGHT);
-		byte[] rgbByteData = new byte[rgbIntData.length * 4];
-		
+		byte[] rgbByteData = new byte[rgbIntData.length * 3];
+				
 		for (int i = 0; i < rgbIntData.length; i++) {
-			rgbByteData[i*4] = (byte)(rgbIntData[i] & 0xFF);
-			rgbByteData[i*4 + 1] = (byte)((rgbIntData[i] & 0xFF00) >>> 8);
-			rgbByteData[i*4 + 2] = (byte)((rgbIntData[i] & 0xFF0000) >>> 16);
-			rgbByteData[i*4 + 3] = (byte)((rgbIntData[i] & 0xFF000000) >>> 24);
+			rgbByteData[i*3] = (byte) Color.red(rgbIntData[i]);
+			rgbByteData[i*3 + 1] = (byte) Color.green(rgbIntData[i]);
+			rgbByteData[i*3 + 2] = (byte) Color.blue(rgbIntData[i]);
 		}
 		
 		return rgbByteData;

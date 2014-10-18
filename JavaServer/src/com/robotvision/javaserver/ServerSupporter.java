@@ -138,20 +138,17 @@ public class ServerSupporter implements IServerSupporter{
 			return;
 		}
 		
-		int[] intData = new int[data.length / 4];
+		int[] intData = new int[data.length / 3];
 		R = new int[intData.length];
 		G = new int[intData.length];
 		B = new int[intData.length];
+		
 		for (int i = 0; i < intData.length; i++) {
-			int value = (data[i*4] & 0xFF) << 24 |
-					(data[i*4 + 1] & 0xFF) << 16 |
-					(data[i*4 + 2] & 0xFF) << 8 |
-					data[i*4 + 3] & 0xFF;
-			intData[i] = value;
-			R[i] = (value >> 16) & 0xff;
-			G[i] = (value >> 8) & 0xff;
-			B[i] = value & 0xff;
+			R[i] = new Byte(data[i*3]).intValue();
+			G[i] = new Byte(data[i*3 + 1]).intValue();
+			B[i] = new Byte(data[i*3 + 2]).intValue();
 		}
+
 	}
 
 	/* (non-Javadoc)
