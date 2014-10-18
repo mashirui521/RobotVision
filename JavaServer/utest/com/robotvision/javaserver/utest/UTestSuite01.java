@@ -42,11 +42,11 @@ public class UTestSuite01 {
 		try {
 			// check camera availability
 			if (supporter.receiveCameraAvailable()) {
+				System.out.println("client camera is available.");
 				
 				// get picture twice
 				for (int i = 0; i < 2; i++) {
 					// send capture command
-					System.out.println("client camera is available.");
 					System.out.print("sending capture picture command...");
 					supporter.send(Commands.CAPTURE_PICTURE);
 					System.out.println("...OK");
