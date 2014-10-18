@@ -9,22 +9,11 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 public class SocketReceiver extends AsyncTask<Void, Void, Integer> {
-
-	private static SocketReceiver _receiver;
 	
 	private ServerSocket _server;
-
-	private SocketReceiver () {
-		
-	}
 	
-	public static SocketReceiver getInstance(int port) throws IOException {
-		if (_receiver == null) {
-			_receiver = new SocketReceiver();
-			_receiver.initializeServer(port);
-		}
-		
-		return _receiver;
+	public SocketReceiver(int port) throws IOException {
+			initializeServer(port);		
 	}
 	
 	public void initializeServer(int port) throws IOException {
@@ -77,6 +66,17 @@ public class SocketReceiver extends AsyncTask<Void, Void, Integer> {
 	protected Integer doInBackground(Void... arg0) {
 		
 		return receiveData();
+	}
+	
+	@Override
+	protected void onCancelled() {
+		try {
+			_server.close();
+		} catch (IOException e) {
+
+		}
+		_server = null;
+		super.onCancelled();
 	}
 
 }

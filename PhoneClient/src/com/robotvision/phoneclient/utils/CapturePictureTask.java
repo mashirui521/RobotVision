@@ -9,8 +9,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 
-public class CapturePictureTask extends AsyncTask<Camera, Void, Void>
-		implements PictureCallback {
+public class CapturePictureTask extends AsyncTask<Camera, Void, Void> implements PictureCallback{
 	
 	private final int PIC_WIDTH = 640;
 	private final int PIC_HEIGHT = 480;
@@ -27,18 +26,16 @@ public class CapturePictureTask extends AsyncTask<Camera, Void, Void>
 
 	@Override
 	public void onPictureTaken(byte[] picture, Camera camera) {
-		camera.stopPreview();
 		try {
-			SocketSender sender = new SocketSender(_ipAddress, _port, 
-					adaptDataToRGB(picture));
-			sender.execute(false);
+			camera.stopPreview();
+		    new SocketSender(_ipAddress, _port, 
+		    		adaptDataToRGB(picture)).execute(false);
 		} catch (Exception e) {
 			Log.d("CameraPreview", "fail to send picture data: " + e.getMessage());
 		} finally {
 			camera.startPreview();
 		}
 	}
-	
 	
 	private byte[] adaptDataToRGB(byte[] data) {
 		Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
@@ -55,7 +52,8 @@ public class CapturePictureTask extends AsyncTask<Camera, Void, Void>
 		
 		return rgbByteData;
 	}
-
+	
+	
 	@Override
 	protected Void doInBackground(Camera... arg0) {
 		
@@ -63,5 +61,6 @@ public class CapturePictureTask extends AsyncTask<Camera, Void, Void>
 		
 		return null;
 	}
+
 
 }

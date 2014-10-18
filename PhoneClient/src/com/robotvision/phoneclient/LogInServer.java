@@ -57,8 +57,9 @@ public class LogInServer extends Activity {
 		});
 	}
 	
-	private void couple() throws UnknownHostException, SocketException, 
-								InterruptedException, ExecutionException {
+	private void couple() throws InterruptedException, 
+	                             ExecutionException, 
+	                             IOException {
 		
 		if (!checkWiFi()) {
 			alert("Please connect to wifi.");
@@ -107,9 +108,10 @@ public class LogInServer extends Activity {
 	
 	private boolean checkServer(String sIpAddress, int nPort) 
 			throws InterruptedException, ExecutionException {
-		SocketSender sender = new SocketSender(sIpAddress, nPort, 
-				ByteBuffer.allocate(4).putInt(Commands.TEST_CONNECTION).array());
-		return sender.execute(true).get();
+		
+		return new SocketSender(sIpAddress, nPort, 
+				        ByteBuffer.allocate(4).putInt(Commands.TEST_CONNECTION).array())
+		                .execute(true).get();
 	}
 
 	private void sendIPAddress() throws UnknownHostException, SocketException {
@@ -119,21 +121,16 @@ public class LogInServer extends Activity {
 			new Exception("address is null.");
 		}
 
-		SocketSender sender = new SocketSender(_ipAddress, _port, 
-				address.getBytes());
-		sender.execute(false);
+		new SocketSender(_ipAddress, _port, 
+				address.getBytes()).execute(false);
 	}
 
-	private void login() throws InterruptedException, ExecutionException {
+	private void login() throws InterruptedException, 
+	                            ExecutionException, IOException {
 				
-		SocketReceiver receiver = null;
-		try {
-			receiver = SocketReceiver.getInstance(CLIENT_PORT);
-		} catch (IOException e) {
-
-		}
+		int command = new SocketReceiver(CLIENT_PORT).execute().get();
 		
-		if (receiver != null && receiver.execute().get() == Commands.LOGIN) {	
+		if (command == Commands.LOGIN) {
 			startMonitor();
 		}
 	}

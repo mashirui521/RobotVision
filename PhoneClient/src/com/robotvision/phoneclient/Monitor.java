@@ -30,6 +30,7 @@ public class Monitor extends Activity {
 	private int _port;
 	
 	private int CLIENT_PORT;
+
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,35 +62,26 @@ public class Monitor extends Activity {
     }
     
     private void runCapture() {
-    	CapturePictureTask capturePictureTask = 
-    			new CapturePictureTask (_ipAddress, _port);
     	
     	if (listenCapture()) {
-    		capturePictureTask.execute(_camera);
+    		new CapturePictureTask (_ipAddress, _port).execute(_camera);
     	}
     }
+
     
-    
-    private boolean listenCapture() {
+	private boolean listenCapture() {
     	boolean capture = false;
     	
-    	SocketReceiver receiver = null;
-		try {
-			receiver = SocketReceiver.getInstance(CLIENT_PORT);
-		} catch (IOException e1) {
-			
-		}
-		
-		if (receiver != null) {
-			try {
-				int command = receiver.execute().get();
-				capture = command == Commands.CAPTURE_PICTURE;
-			} catch (InterruptedException e) {
+    	try {
+    		int command = new SocketReceiver(CLIENT_PORT).execute().get();				
+    		capture = command == Commands.CAPTURE_PICTURE;
+    	} catch (InterruptedException e) {
 
-			} catch (ExecutionException e) {
+    	} catch (ExecutionException e) {
 
-			}
-		}
+    	} catch (IOException e) {
+
+    	}
     	
     	return capture;
     	
@@ -97,9 +89,9 @@ public class Monitor extends Activity {
     
     
     private void sendCameraAvailable() {
-    	SocketSender sender = new SocketSender(_ipAddress, _port, 
-    			Commands.CAMERA_AVAILABLE);
-    	sender.execute(false);
+
+    	new SocketSender(_ipAddress, _port, 
+    			Commands.CAMERA_AVAILABLE).execute(false);
     }
     
     
