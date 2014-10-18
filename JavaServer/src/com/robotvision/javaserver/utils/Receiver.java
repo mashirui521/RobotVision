@@ -13,9 +13,11 @@ public class Receiver {
 	private ServerSocket _server;
 	private Socket _socket;
 	
+	
 	private Receiver() {
 		
 	}
+	
 	
 	/**
 	 * get receiver instance
@@ -31,6 +33,7 @@ public class Receiver {
 		return _receiver;
 	}
 	
+	
 	/**
 	 * initialize server, this is only allowed to be invoked by getInstance
 	 * @param port
@@ -39,6 +42,7 @@ public class Receiver {
 	public void initializeServer(int port) throws IOException {
 		_server = new ServerSocket(port);	
 	}
+	
 	
 	/**
 	 * run the receiving
@@ -69,15 +73,9 @@ public class Receiver {
 				e.printStackTrace();
 			}
 			
-			try {
-				_server.close();
-				_server = null;
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			
 		}
 	}
+	
 	
 	/**
 	 * get received data
