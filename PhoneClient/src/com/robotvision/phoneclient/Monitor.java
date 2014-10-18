@@ -30,7 +30,33 @@ public class Monitor extends Activity {
 	private int _port;
 	
 	private int CLIENT_PORT;
+	
+	private Button _captureButton;
+	boolean _start = true;
+	
+	
+	private final Thread _captureThread = new Thread( new Runnable() {
 
+		@Override
+		public void run() {
+			while (listenCapture()) {
+				new CapturePictureTask (_ipAddress, _port).execute(_camera);
+				try {
+					// The sleep time should be adjusted
+					Thread.sleep(500);
+				} catch (InterruptedException e) {
+
+				}
+				
+				//sendCameraAvailable();
+			}
+			
+			_captureButton.setText("Capture");
+			_start = true;
+			return;
+		}
+
+	});
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,44 +68,38 @@ public class Monitor extends Activity {
         	_port = extras.getInt("port");
         	CLIENT_PORT = extras.getInt("CLIENT_PORT");
         }
+        
+        setButtonAction();
                 
         startCameraPreview();
-        
-        
-        Button captureButton = 
-        		(Button) findViewById(R.id.button_capture);
-        captureButton.setOnClickListener(new OnClickListener () {
-
-			@Override
-			public void onClick(View arg0) {
-				
-				sendCameraAvailable();
-				runCapture();
-				
-			}
-        	
-        });
     }
     
-    private void runCapture() {
-    	
-    	new Thread( new Runnable() {
+    
+    private void setButtonAction() {
 
-			@Override
-			public void run() {
-				while (listenCapture()) {
-		    		new CapturePictureTask (_ipAddress, _port).execute(_camera);
-		    		try {
-		    			// The sleep time should be adjusted
-						Thread.sleep(500);
-					} catch (InterruptedException e) {
-						
-					}
-		    	}
-			}
+    	_captureButton = (Button) findViewById(R.id.button_capture);
+    	_captureButton.setOnClickListener(new OnClickListener() {
     		
-    	}).start();
-    	
+    		@Override
+    		public void onClick(View arg0) {
+    			
+    			if (_start) {
+    				_captureButton.setText("Stop");
+    				sendCameraAvailable();
+    				runCapture();
+    			} else {
+    				_captureButton.setText("Capture");
+    				sendCameraStop();
+    			}
+    			
+    			_start = !_start;
+    		}
+    	});
+    }
+    
+    
+    private void runCapture() {
+    	_captureThread.start();
     }
 
     
@@ -102,10 +122,21 @@ public class Monitor extends Activity {
     }
     
     
-    private void sendCameraAvailable() {
-
+	private void sendCameraAvailable() {
     	new SocketSender(_ipAddress, _port, 
     			Commands.CAMERA_AVAILABLE).execute(false);
+    }
+    
+    
+    @SuppressWarnings("deprecation")
+	private void sendCameraStop() {
+
+    	if (_captureThread.isAlive()) {
+    		_captureThread.stop();
+    	}
+
+    	new SocketSender(_ipAddress, _port, 
+    			Commands.STOP_CAPTURE).execute(false);
     }
     
     
