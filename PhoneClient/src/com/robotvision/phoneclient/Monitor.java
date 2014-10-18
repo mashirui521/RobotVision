@@ -13,8 +13,6 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.FrameLayout;
 
-import com.robotvision.phoneclient.utils.CaptureListener;
-import com.robotvision.phoneclient.utils.CommandHandler;
 import com.robotvision.phoneclient.utils.Commands;
 import com.robotvision.phoneclient.utils.SocketReceiver;
 import com.robotvision.phoneclient.utils.SocketSender;
@@ -27,7 +25,6 @@ public class Monitor extends Activity {
 	
 	private String _ipAddress;
 	private int _port;
-	private CommandHandler _commandHandler;
 	
 	private int CLIENT_PORT;
 	
@@ -43,7 +40,6 @@ public class Monitor extends Activity {
         }
                 
         startCameraPreview();
-        setCommandHandler();
         
         
         Button captureButton = (Button) findViewById(R.id.button_capture);
@@ -62,8 +58,7 @@ public class Monitor extends Activity {
     
     private void runCapture() {
     	while (listenCapture()) {
-    		_commandHandler.capture();
-    		sendCameraAvailable();
+    		_mCamera.takePicture(null, null, _mPreview.getPicture());
     	}
     }
     
@@ -91,18 +86,6 @@ public class Monitor extends Activity {
     	sender.execute(false);
     }
     
-    
-    private void setCommandHandler() {
-    	_commandHandler = new CommandHandler();
-    	_commandHandler.setCaptureListener(new CaptureListener() {
-
-        	@Override
-        	public void onCapture() {
-        		_mCamera.takePicture(null, null, _mPreview.getPicture());
-        	}
-		
-        });
-    }
     
     private void startCameraPreview() {
     	try {
