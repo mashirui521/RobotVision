@@ -45,7 +45,7 @@ public class UTestSuite01 {
 			if (supporter.receiveCameraAvailable()) {
 				
 				// send capture command
-				System.out.println("client is available.");
+				System.out.println("client camera is available.");
 				System.out.print("sending capture picture command...");
 				supporter.send(Commands.CAPTURE_PICTURE);
 				System.out.println("...OK");
