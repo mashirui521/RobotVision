@@ -1,7 +1,5 @@
 package com.robotvision.phoneclient;
 
-import java.io.IOException;
-import java.util.concurrent.ExecutionException;
 
 import android.app.Activity;
 import android.hardware.Camera;
@@ -14,8 +12,8 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.FrameLayout;
 
+import com.robotvision.phoneclient.utils.CapturePictureTask;
 import com.robotvision.phoneclient.utils.Commands;
-import com.robotvision.phoneclient.utils.SocketReceiver;
 import com.robotvision.phoneclient.utils.SocketSender;
 
 
@@ -58,34 +56,11 @@ public class Monitor extends Activity {
     }
     
     private void runCapture() {
-    	while (listenCapture()) {
-    		_mCamera.takePicture(null, null, _mPreview.getPicture());
-    	}
-    }
-    
-    private boolean listenCapture() {
-    	boolean capture = false;
+    	CapturePictureTask capturePictureTask = 
+    			new CapturePictureTask (_mCamera, 
+    					_ipAddress, _port, CLIENT_PORT);
     	
-    	SocketReceiver receiver = null;
-		try {
-			receiver = SocketReceiver.getInstance(CLIENT_PORT);
-		} catch (IOException e1) {
-			
-		}
-		
-		if (receiver != null) {
-			try {
-				int command = receiver.execute().get();
-				capture = command == Commands.CAPTURE_PICTURE;
-			} catch (InterruptedException e) {
-
-			} catch (ExecutionException e) {
-
-			}
-		}
-    	
-    	return capture;
-    	
+    	capturePictureTask.execute();
     }
     
     
@@ -99,7 +74,7 @@ public class Monitor extends Activity {
     private void startCameraPreview() {
     	try {
         	_mCamera = Camera.open();
-        	_mPreview = new CameraPreview(this, _mCamera, _ipAddress, _port);
+        	_mPreview = new CameraPreview(this, _mCamera);
             FrameLayout previewLayout = (FrameLayout) findViewById(R.id.camera_preview);
             previewLayout.addView(_mPreview);
         } catch (Exception e) {
