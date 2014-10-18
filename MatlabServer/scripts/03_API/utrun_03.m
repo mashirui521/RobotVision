@@ -20,12 +20,11 @@ try
     
         % capture RGB picture
         stOption = struct('sFormat', '-rgb', ...
-            'bShow', true);
+            'bShow', false);
         mls_api_get_picture(stInfo.hSupporter, stOption);
         
         % capture grayscaled picture
         stOption.sFormat = '-gray';
-        stOption.bShow = false;
         mls_api_get_picture(stInfo.hSupporter, stOption);
     
     end

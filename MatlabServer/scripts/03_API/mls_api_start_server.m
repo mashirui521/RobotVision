@@ -30,7 +30,7 @@ stInfo.hSupporter = mls_supporter_get(nPort);
 mls_supporter_find_client(stInfo.hSupporter);
 
 %% listen client response
-fprintf('Listening client...');
+fprintf('listening client...');
 [stInfo.sClientIPAddress, stInfo.nClientPort] = ...
     mls_supporter_receiveClientAddress(stInfo.hSupporter);
 fprintf('OK\nClient IP: %s, Port: %d\n', ...
