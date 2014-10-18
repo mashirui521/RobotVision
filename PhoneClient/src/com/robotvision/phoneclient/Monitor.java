@@ -76,11 +76,11 @@ public class Monitor extends Activity {
     		int command = new SocketReceiver(CLIENT_PORT).execute().get();				
     		capture = command == Commands.CAPTURE_PICTURE;
     	} catch (InterruptedException e) {
-
+    		Log.d("Monitor", e.getMessage());
     	} catch (ExecutionException e) {
-
+    		Log.d("Monitor", e.getMessage());
     	} catch (IOException e) {
-
+    		Log.d("Monitor", e.getMessage());
     	}
     	
     	return capture;

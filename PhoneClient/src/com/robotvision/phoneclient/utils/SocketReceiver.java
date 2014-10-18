@@ -2,6 +2,7 @@ package com.robotvision.phoneclient.utils;
 
 import java.io.DataInputStream;
 import java.io.IOException;
+import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -13,15 +14,12 @@ public class SocketReceiver extends AsyncTask<Void, Void, Integer> {
 	private ServerSocket _server;
 	
 	public SocketReceiver(int port) throws IOException {
-			initializeServer(port);		
+		_server = new ServerSocket();
+		_server.setReuseAddress(true);
+		_server.bind(new InetSocketAddress(port));
 	}
 	
-	public void initializeServer(int port) throws IOException {
-		if (_server == null) {
-			_server = new ServerSocket(port);
-		}
-	}
-
+	
 	@SuppressWarnings("finally")
 	private int receiveData() {
 
@@ -57,6 +55,16 @@ public class SocketReceiver extends AsyncTask<Void, Void, Integer> {
 					socket = null;
 				}
 			}
+			
+			if (_server != null) {
+				try {
+					_server.close();
+				} catch (IOException e) {
+					Log.d("SocketReceiver", "fail to close server: " + e.getMessage());
+				} finally {
+					_server = null;
+				}
+			}
 
 			return command;
 		}
@@ -66,17 +74,6 @@ public class SocketReceiver extends AsyncTask<Void, Void, Integer> {
 	protected Integer doInBackground(Void... arg0) {
 		
 		return receiveData();
-	}
-	
-	@Override
-	protected void onCancelled() {
-		try {
-			_server.close();
-		} catch (IOException e) {
-
-		}
-		_server = null;
-		super.onCancelled();
 	}
 
 }

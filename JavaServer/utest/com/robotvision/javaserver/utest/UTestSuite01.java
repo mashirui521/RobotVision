@@ -24,10 +24,9 @@ public class UTestSuite01 {
 		
 		// get client ip and port number
 		try {
-			String address = supporter.receiveClientAddress();
-			System.out.println(address);
-			System.out.println("client ip: " + supporter.getClientIpAddress());
-			System.out.println("client port: " + supporter.getClientPort());
+			supporter.receiveClientAddress();
+			System.out.print("client ip: " + supporter.getClientIpAddress());
+			System.out.println(", port: " + supporter.getClientPort());
 		} catch (IOException e) {
 			fail("fail to receive ip: " + e.getLocalizedMessage());
 		}
@@ -54,11 +53,20 @@ public class UTestSuite01 {
 				System.out.print("getting picture...");
 				supporter.receivePicture();
 				System.out.println("...captured");
-				supporter.send(Commands.STOP_CAPTURE);
 			}
 		} catch (Exception e) {
-			fail("fail to capture: " + e.getMessage());
 			System.out.println("...FAIL");
+			fail("fail to capture: " + e.getMessage());
+		}
+		
+		// stop capture
+		try {
+			System.out.print("sending capture picture command...");
+			supporter.send(Commands.STOP_CAPTURE);
+			System.out.println("...OK");
+		} catch (Exception e) {
+			System.out.println("...OK");
+			fail("fail to stop caputre: " + e.getMessage());
 		}
 		
 		// adapt picture to RGB

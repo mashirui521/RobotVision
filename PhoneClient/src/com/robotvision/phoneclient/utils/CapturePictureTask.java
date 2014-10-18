@@ -17,6 +17,7 @@ public class CapturePictureTask extends AsyncTask<Camera, Void, Void> implements
 	private String _ipAddress;
 	private int _port;
 	
+	private byte[] _picture;
 	
 	public CapturePictureTask (String ipAddress, int port) {
 	
@@ -28,8 +29,8 @@ public class CapturePictureTask extends AsyncTask<Camera, Void, Void> implements
 	public void onPictureTaken(byte[] picture, Camera camera) {
 		try {
 			camera.stopPreview();
-		    new SocketSender(_ipAddress, _port, 
-		    		adaptDataToRGB(picture)).execute(false);
+		    _picture = picture;
+		    publishProgress();
 		} catch (Exception e) {
 			Log.d("CameraPreview", "fail to send picture data: " + e.getMessage());
 		} finally {
@@ -57,10 +58,25 @@ public class CapturePictureTask extends AsyncTask<Camera, Void, Void> implements
 	@Override
 	protected Void doInBackground(Camera... arg0) {
 		
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			Log.d("CapturePictureTask", "failed to sleep thread. " + e.getMessage());
+		}
+		
 		arg0[0].takePicture(null, null, this);
 		
 		return null;
 	}
 
+	
+	@Override
+	protected void onProgressUpdate(Void... values) {
+		
+		new SocketSender(_ipAddress, _port, 
+	    		adaptDataToRGB(_picture)).execute(false);
+		
+		super.onProgressUpdate(values);
+	}
 
 }
