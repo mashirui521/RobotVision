@@ -36,8 +36,7 @@ public class ServerSupporter implements IServerSupporter{
 	@Override
 	public void findClient() {
 		try {
-			Receiver receiver = new Receiver(port);
-			receiver.init();
+			Receiver receiver = Receiver.getInstance(port);
 			receiver.run();
 		} catch (Exception e) {
 
@@ -60,8 +59,7 @@ public class ServerSupporter implements IServerSupporter{
 	@Override
 	public void receivePicture() throws IOException {
 				
-		Receiver receiver = new Receiver(port);
-		receiver.init();
+		Receiver receiver = Receiver.getInstance(port);
 		receiver.run();
 		
 		this.data = receiver.getData();
@@ -69,8 +67,7 @@ public class ServerSupporter implements IServerSupporter{
 	
 	@Override
 	public String receiveClientAddress() throws IOException {
-		Receiver receiver = new Receiver(port);
-		receiver.init();
+		Receiver receiver = Receiver.getInstance(port);
 		receiver.run();
 		
 		String address = new String(receiver.getData());
@@ -89,8 +86,7 @@ public class ServerSupporter implements IServerSupporter{
 	
 	@Override
 	public boolean receiveCameraAvailable() throws IOException {
-		Receiver receiver = new Receiver(port);
-		receiver.init();
+		Receiver receiver = Receiver.getInstance(port);
 		receiver.run(); 
 		byte[] data = receiver.getData();
 		int command = data[3] & 0xFF |

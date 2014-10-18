@@ -7,29 +7,35 @@ import java.net.Socket;
 
 public class Receiver {
 	
-	private byte[] data;
-	private ServerSocket server;
-	private Socket socket;
+	private static Receiver _receiver;
 	
-	private int port;
+	private byte[] _data;
+	private ServerSocket _server;
+	private Socket _socket;
 	
-	public Receiver(int port) {
-		this.port = port;
+	private Receiver() {
+		
 	}
 	
-	public void init() throws IOException {
-		if (server == null) {
-			server = new ServerSocket(port);
+	public static Receiver getInstance(int port) throws IOException {
+		if (_receiver == null) {
+			_receiver = new Receiver();
+			_receiver.initializeServer(port);
 		}
+		return _receiver;
+	}
+	
+	public void initializeServer(int port) throws IOException {
+		_server = new ServerSocket(port);	
 	}
 	
 	public void run() {
 		DataInputStream stream = null;
 		try {
-			socket = server.accept();
-			stream = new DataInputStream(socket.getInputStream());
-			data = new byte[stream.readInt()];
-			stream.readFully(data);
+			_socket = _server.accept();
+			stream = new DataInputStream(_socket.getInputStream());
+			_data = new byte[stream.readInt()];
+			stream.readFully(_data);
 		} catch (IOException e) {
 			//e.printStackTrace();
 		} finally {
@@ -43,15 +49,15 @@ public class Receiver {
 			}
 			
 			try {
-				socket.close();
-				socket = null;
+				_socket.close();
+				_socket = null;
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 			
 			try {
-				server.close();
-				server = null;
+				_server.close();
+				_server = null;
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -60,6 +66,6 @@ public class Receiver {
 	}
 	
 	public byte[] getData() {
-		return this.data;
+		return this._data;
 	}
 }
