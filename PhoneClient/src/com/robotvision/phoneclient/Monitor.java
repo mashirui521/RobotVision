@@ -129,11 +129,15 @@ public class Monitor extends Activity {
 	private void sendCameraStop() {
 
     	if (_captureThread.isAlive()) {
-    		_captureThread.stop();
+    		try {
+    			_captureThread.stop();
+    		} catch (Exception e) {
+    			_captureThread.interrupt();
+    		}
     	}
 
-    	new SocketSender(_ipAddress, _port, 
-    			Commands.STOP_CAPTURE).execute(false);
+//    	new SocketSender(_ipAddress, _port, 
+//    			Commands.STOP_CAPTURE).execute(false);
     }
     
     
