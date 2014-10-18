@@ -13,11 +13,22 @@ public class Sender {
 	private String ipAddress;
 	private int port;
 	
+	/**
+	 * Constructor
+	 * @param ipAddress client ip address
+	 * @param port client port number
+	 */
 	public Sender(String ipAddress, int port) {
 		this.ipAddress = ipAddress;
 		this.port = port;
 	}
 	
+	/**
+	 * initialize socket
+	 * @param data the data which should be sent.
+	 * @throws UnknownHostException
+	 * @throws IOException
+	 */
 	public void init(int data) throws UnknownHostException, IOException {
 		if (socket == null) {
 			socket = new Socket(ipAddress, port);
@@ -25,6 +36,9 @@ public class Sender {
 		this.data = data;
 	}
 	
+	/**
+	 * run sending
+	 */
 	public void run() {
 		try {
 			DataOutputStream stream = new DataOutputStream(socket.getOutputStream());

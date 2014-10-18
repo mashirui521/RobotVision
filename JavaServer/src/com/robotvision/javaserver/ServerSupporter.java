@@ -21,6 +21,10 @@ public class ServerSupporter implements IServerSupporter{
 	private int[] G;
 	private int[] B;
 	
+	/**
+	 * @param port The port number used in localhost server
+	 * @return
+	 */
 	public static IServerSupporter getInstance(int port) {
 		if (_supporter != null) {
 			return _supporter;
@@ -33,6 +37,9 @@ public class ServerSupporter implements IServerSupporter{
 		this.port = port;
 	}
 	
+	/* (non-Javadoc)
+	 * @see com.robotvision.javaserver.IServerSupporter#findClient()
+	 */
 	@Override
 	public void findClient() {
 		try {
@@ -42,9 +49,11 @@ public class ServerSupporter implements IServerSupporter{
 
 		}
 		
-		// dummy receiver, just for server checking on client side;
 	}
 	
+	/* (non-Javadoc)
+	 * @see com.robotvision.javaserver.IServerSupporter#send(int)
+	 */
 	@Override
 	public void send(int data) throws Exception {
 		if (clientIpAddress == null) {
@@ -56,6 +65,9 @@ public class ServerSupporter implements IServerSupporter{
 		sender.run();
 	}
 
+	/* (non-Javadoc)
+	 * @see com.robotvision.javaserver.IServerSupporter#receivePicture()
+	 */
 	@Override
 	public void receivePicture() throws IOException {
 				
@@ -65,6 +77,9 @@ public class ServerSupporter implements IServerSupporter{
 		this.data = receiver.getData();
 	}
 	
+	/* (non-Javadoc)
+	 * @see com.robotvision.javaserver.IServerSupporter#receiveClientAddress()
+	 */
 	@Override
 	public String receiveClientAddress() throws IOException {
 		Receiver receiver = Receiver.getInstance(port);
@@ -84,6 +99,9 @@ public class ServerSupporter implements IServerSupporter{
 		return address;
 	}
 	
+	/* (non-Javadoc)
+	 * @see com.robotvision.javaserver.IServerSupporter#receiveCameraAvailable()
+	 */
 	@Override
 	public boolean receiveCameraAvailable() throws IOException {
 		Receiver receiver = Receiver.getInstance(port);
@@ -96,16 +114,25 @@ public class ServerSupporter implements IServerSupporter{
 		return command == Commands.CAMERA_AVAILABLE;
 	}
 	
+	/* (non-Javadoc)
+	 * @see com.robotvision.javaserver.IServerSupporter#getClientPort()
+	 */
 	@Override
 	public int getClientPort() {
 		return clientPort;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.robotvision.javaserver.IServerSupporter#getClientIpAddress()
+	 */
 	@Override
 	public String getClientIpAddress() {
 		return clientIpAddress;
 	}
 	
+	/* (non-Javadoc)
+	 * @see com.robotvision.javaserver.IServerSupporter#adaptByteToRGB()
+	 */
 	@Override
 	public void adaptByteToRGB() {
 		
@@ -130,16 +157,25 @@ public class ServerSupporter implements IServerSupporter{
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see com.robotvision.javaserver.IServerSupporter#getR()
+	 */
 	@Override
 	public int[] getR() {
 		return R;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.robotvision.javaserver.IServerSupporter#getG()
+	 */
 	@Override
 	public int[] getG() {
 		return G;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.robotvision.javaserver.IServerSupporter#getB()
+	 */
 	@Override
 	public int[] getB() {
 		return B;

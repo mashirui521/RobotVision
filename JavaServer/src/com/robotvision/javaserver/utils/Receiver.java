@@ -17,6 +17,12 @@ public class Receiver {
 		
 	}
 	
+	/**
+	 * get receiver instance
+	 * @param port port number used by localhost server
+	 * @return
+	 * @throws IOException
+	 */
 	public static Receiver getInstance(int port) throws IOException {
 		if (_receiver == null) {
 			_receiver = new Receiver();
@@ -25,10 +31,18 @@ public class Receiver {
 		return _receiver;
 	}
 	
+	/**
+	 * initialize server, this is only allowed to be invoked by getInstance
+	 * @param port
+	 * @throws IOException
+	 */
 	public void initializeServer(int port) throws IOException {
 		_server = new ServerSocket(port);	
 	}
 	
+	/**
+	 * run the receiving
+	 */
 	public void run() {
 		DataInputStream stream = null;
 		try {
@@ -65,6 +79,10 @@ public class Receiver {
 		}
 	}
 	
+	/**
+	 * get received data
+	 * @return
+	 */
 	public byte[] getData() {
 		return this._data;
 	}
