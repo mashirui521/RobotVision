@@ -10,11 +10,27 @@ import android.util.Log;
 
 public class SocketReceiver extends AsyncTask<Void, Void, Integer> {
 
+	private static SocketReceiver _receiver;
+	
 	private ServerSocket _server;
-	private int _port;
 
-	public SocketReceiver (int port) {
-		this._port = port;
+	private SocketReceiver () {
+		
+	}
+	
+	public static SocketReceiver getInstance(int port) throws IOException {
+		if (_receiver == null) {
+			_receiver = new SocketReceiver();
+			_receiver.initializeServer(port);
+		}
+		
+		return _receiver;
+	}
+	
+	public void initializeServer(int port) throws IOException {
+		if (_server == null) {
+			_server = new ServerSocket(port);
+		}
 	}
 
 	@SuppressWarnings("finally")
@@ -25,25 +41,12 @@ public class SocketReceiver extends AsyncTask<Void, Void, Integer> {
 		int command = 0;
 		
 		try {
-			if (_server == null) {
-				_server = new ServerSocket(_port);
-			}
-
 			socket = _server.accept();
 			stream = new DataInputStream(socket.getInputStream());
 			command = stream.readInt();
 		} catch (IOException e) {
 			Log.d("SocketReceiver", "fail to receive data: " + e.getMessage());
 		} finally {
-			if (_server != null) {
-				try {
-					_server.close();
-				} catch (IOException e) {
-					Log.d("SocketReceiver", "fail to close server: " + e.getMessage());
-				} finally {
-					_server = null;
-				}
-			}
 
 			if (stream != null) {
 				try {

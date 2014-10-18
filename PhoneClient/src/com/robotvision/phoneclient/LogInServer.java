@@ -1,5 +1,6 @@
 package com.robotvision.phoneclient;
 
+import java.io.IOException;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
@@ -125,9 +126,14 @@ public class LogInServer extends Activity {
 
 	private void login() throws InterruptedException, ExecutionException {
 				
-		SocketReceiver receiver = new SocketReceiver(CLIENT_PORT);
+		SocketReceiver receiver = null;
+		try {
+			receiver = SocketReceiver.getInstance(CLIENT_PORT);
+		} catch (IOException e) {
+
+		}
 		
-		if (receiver.execute().get() == Commands.LOGIN) {	
+		if (receiver != null && receiver.execute().get() == Commands.LOGIN) {	
 			startMonitor();
 		}
 	}

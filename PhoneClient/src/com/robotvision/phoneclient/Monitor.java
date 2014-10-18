@@ -1,5 +1,6 @@
 package com.robotvision.phoneclient;
 
+import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 
 import android.app.Activity;
@@ -65,14 +66,22 @@ public class Monitor extends Activity {
     private boolean listenCapture() {
     	boolean capture = false;
     	
-    	SocketReceiver receiver = new SocketReceiver(CLIENT_PORT);
-    	try {
-			int command = receiver.execute().get();
-			capture = command == Commands.REQUEER_PICTURE;
-		} catch (InterruptedException e) {
+    	SocketReceiver receiver = null;
+		try {
+			receiver = SocketReceiver.getInstance(CLIENT_PORT);
+		} catch (IOException e1) {
 			
-		} catch (ExecutionException e) {
-			
+		}
+		
+		if (receiver != null) {
+			try {
+				int command = receiver.execute().get();
+				capture = command == Commands.REQUEER_PICTURE;
+			} catch (InterruptedException e) {
+
+			} catch (ExecutionException e) {
+
+			}
 		}
     	
     	return capture;
