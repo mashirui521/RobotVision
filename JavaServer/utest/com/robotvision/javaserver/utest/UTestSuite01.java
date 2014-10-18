@@ -60,14 +60,14 @@ public class UTestSuite01 {
 		}
 		
 		// stop capture
-//		try {
-//			System.out.print("sending capture picture command...");
-//			supporter.send(Commands.STOP_CAPTURE);
-//			System.out.println("...OK");
-//		} catch (Exception e) {
-//			System.out.println("...OK");
-//			fail("fail to stop caputre: " + e.getMessage());
-//		}
+		try {
+			System.out.print("sending stop picture command...");
+			supporter.send(Commands.STOP_CAPTURE);
+			System.out.println("...OK");
+		} catch (Exception e) {
+			System.out.println("...FAIL");
+			fail("fail to stop caputre: " + e.getMessage());
+		}
 		
 		// adapt picture to RGB
 		supporter.adaptByteToRGB();

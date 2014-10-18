@@ -58,12 +58,6 @@ public class CapturePictureTask extends AsyncTask<Camera, Void, Void> implements
 	@Override
 	protected Void doInBackground(Camera... arg0) {
 		
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
-			Log.d("CapturePictureTask", "failed to sleep thread. " + e.getMessage());
-		}
-		
 		arg0[0].takePicture(null, null, this);
 		
 		return null;
