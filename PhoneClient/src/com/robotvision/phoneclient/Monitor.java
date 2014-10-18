@@ -76,7 +76,7 @@ public class Monitor extends Activity {
 		if (receiver != null) {
 			try {
 				int command = receiver.execute().get();
-				capture = command == Commands.REQUEER_PICTURE;
+				capture = command == Commands.CAPTURE_PICTURE;
 			} catch (InterruptedException e) {
 
 			} catch (ExecutionException e) {
