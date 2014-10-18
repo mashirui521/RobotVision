@@ -10,11 +10,9 @@ import android.hardware.Camera.PictureCallback;
 import android.os.AsyncTask;
 import android.util.Log;
 
-public class CapturePictureTask extends AsyncTask<Void, Void, Void>
+public class CapturePictureTask extends AsyncTask<Camera, Void, Void>
 		implements PictureCallback {
-	
-	private Camera _camera;
-	
+		
 	private final int PIC_WIDTH = 640;
 	private final int PIC_HEIGHT = 480;
 	
@@ -23,25 +21,23 @@ public class CapturePictureTask extends AsyncTask<Void, Void, Void>
 	
 	private int CLIENT_PORT;
 	
-	public CapturePictureTask (Camera camera, 
-			String ipAddress, int port, int clientPort) {
-		this._camera = camera;
+	public CapturePictureTask (String ipAddress, int port, int clientPort) {
 		this._ipAddress = ipAddress;
 		this._port = port;
 		this.CLIENT_PORT = clientPort;
 	}
 
 	@Override
-	public void onPictureTaken(byte[] arg0, Camera arg1) {
-		_camera.stopPreview();
+	public void onPictureTaken(byte[] picture, Camera camera) {
+		camera.stopPreview();
 		try {
 			SocketSender sender = new SocketSender(_ipAddress, _port, 
-					adaptDataToRGB(arg0));
+					adaptDataToRGB(picture));
 			sender.execute(false);
 		} catch (Exception e) {
 			Log.d("CameraPreview", "fail to send picture data: " + e.getMessage());
 		} finally {
-			_camera.startPreview();
+			camera.startPreview();
 		}
 	}
 	
@@ -87,10 +83,10 @@ public class CapturePictureTask extends AsyncTask<Void, Void, Void>
 	}
 
 	@Override
-	protected Void doInBackground(Void... arg0) {
+	protected Void doInBackground(Camera... arg0) {
 		
 		if (listenCapture()) {
-			_camera.takePicture(null, null, this);
+			arg0[0].takePicture(null, null, this);
 		}
 		
 		return null;

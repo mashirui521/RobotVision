@@ -19,7 +19,7 @@ import com.robotvision.phoneclient.utils.SocketSender;
 
 public class Monitor extends Activity {
 
-	private Camera _mCamera;
+	private Camera _camera;
 	private CameraPreview _mPreview;
 	
 	private String _ipAddress;
@@ -57,10 +57,9 @@ public class Monitor extends Activity {
     
     private void runCapture() {
     	CapturePictureTask capturePictureTask = 
-    			new CapturePictureTask (_mCamera, 
-    					_ipAddress, _port, CLIENT_PORT);
+    			new CapturePictureTask (_ipAddress, _port, CLIENT_PORT);
     	
-    	capturePictureTask.execute();
+    	capturePictureTask.execute(_camera);
     }
     
     
@@ -73,8 +72,8 @@ public class Monitor extends Activity {
     
     private void startCameraPreview() {
     	try {
-        	_mCamera = Camera.open();
-        	_mPreview = new CameraPreview(this, _mCamera);
+        	_camera = Camera.open();
+        	_mPreview = new CameraPreview(this, _camera);
             FrameLayout previewLayout = (FrameLayout) findViewById(R.id.camera_preview);
             previewLayout.addView(_mPreview);
         } catch (Exception e) {
