@@ -41,13 +41,10 @@ public class ServerSupporter implements IServerSupporter{
 	 * @see com.robotvision.javaserver.IServerSupporter#findClient()
 	 */
 	@Override
-	public void findClient() {
-		try {
-			Receiver receiver = Receiver.getInstance(port);
-			receiver.run();
-		} catch (Exception e) {
-
-		}
+	public void findClient() throws IOException {
+		
+		Receiver receiver = Receiver.getInstance(port);
+		receiver.run();
 		
 	}
 	

@@ -15,18 +15,26 @@ try
     %% start server
     stInfo = mls_api_start_server(8888);
     
-    %% capture RGB picture
-    stOption = struct('sFormat', '-rgb', ...
-        'bShow', true);
-    mls_api_get_picture(stInfo.hSupporter, stOption);
+    %% capture picture twice
+    if mls_supporter_receiveCameraAvailable(stInfo.hSupporter)
     
-    %% capture grayscaled picture
-    stOption.sFormat = '-gray';
-    stOption.bShow = false;
-    mls_api_get_picture(stInfo.hSupporter, stOption);
+        % capture RGB picture
+        stOption = struct('sFormat', '-rgb', ...
+            'bShow', true);
+        mls_api_get_picture(stInfo.hSupporter, stOption);
+        
+        % capture grayscaled picture
+        stOption.sFormat = '-gray';
+        stOption.bShow = false;
+        mls_api_get_picture(stInfo.hSupporter, stOption);
+    
+    end
     
     %% stop capture
+    fprintf('sending stop picture command...');
     mls_api_stop_capture(stInfo.hSupporter);
+    fprintf('...OK\n');
 catch
+    fprintf('...FAIL\n');
 end
 end

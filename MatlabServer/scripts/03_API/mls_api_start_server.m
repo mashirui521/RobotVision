@@ -22,7 +22,7 @@ stInfo = struct('hSupporter', '', ...
                 'nClientPort', '');
 
 %% initialize supporter
-display(sprintf('Start server. IP: %s, Port: &d\n', ...
+display(sprintf('Start server. IP: %s, Port: %d', ...
     char(java.net.Inet4Address.getLocalHost.getHostAddress), nPort));            
 stInfo.hSupporter = mls_supporter_get(nPort);
 
@@ -30,11 +30,11 @@ stInfo.hSupporter = mls_supporter_get(nPort);
 mls_supporter_find_client(stInfo.hSupporter);
 
 %% listen client response
-display('Listening client.......\n');
+fprintf('Listening client...');
 [stInfo.sClientIPAddress, stInfo.nClientPort] = ...
     mls_supporter_receiveClientAddress(stInfo.hSupporter);
-display(sprintf('Get client. Client IP: %s, Port: %d\n', ...
-    stInfo.sClientIPAddress, stInfo.nClientPort));
+fprintf('OK\nClient IP: %s, Port: %d\n', ...
+    stInfo.sClientIPAddress, stInfo.nClientPort);
 
 %% send login command
 mls_supporter_send(stInfo.hSupporter, '-login');

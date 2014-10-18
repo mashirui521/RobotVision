@@ -6,8 +6,9 @@ public interface IServerSupporter {
 	
 	/**
 	 * dummy receiver, just for server checking on client side;
+	 * @throws IOException 
 	 */
-	public void findClient();
+	public void findClient() throws IOException;
 	
 	/**
 	 * send command to client

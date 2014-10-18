@@ -17,6 +17,6 @@ end
 
 %% get availabilty
 bAvailable = hSupporter.receiveCameraAvailable();
-
+display('client camera is available.');
 return;
 end
