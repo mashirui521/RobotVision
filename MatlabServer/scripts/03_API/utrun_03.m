@@ -24,8 +24,8 @@ try
         mls_api_get_picture(stInfo.hSupporter, stOption);
         
         % capture grayscaled picture
-%         stOption.sFormat = '-gray';
-%         mls_api_get_picture(stInfo.hSupporter, stOption);
+        stOption.sFormat = '-gray';
+        mls_api_get_picture(stInfo.hSupporter, stOption);
     
     end
     
