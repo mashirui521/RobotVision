@@ -144,9 +144,9 @@ public class ServerSupporter implements IServerSupporter{
 		B = new int[intData.length];
 		
 		for (int i = 0; i < intData.length; i++) {
-			R[i] = new Byte(data[i*3]).intValue();
-			G[i] = new Byte(data[i*3 + 1]).intValue();
-			B[i] = new Byte(data[i*3 + 2]).intValue();
+			R[i] = data[i*3] & 0xFF;
+			G[i] = data[i*3 + 1] & 0xFF;
+			B[i] = data[i*3 + 2] & 0xFF;
 		}
 
 	}
