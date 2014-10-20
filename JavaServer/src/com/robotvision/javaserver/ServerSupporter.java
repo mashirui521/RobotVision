@@ -1,6 +1,8 @@
 package com.robotvision.javaserver;
 
 import java.io.IOException;
+import java.net.Inet4Address;
+import java.net.UnknownHostException;
 
 import com.robotvision.javaserver.utils.Commands;
 import com.robotvision.javaserver.utils.Receiver;
@@ -35,6 +37,13 @@ public class ServerSupporter implements IServerSupporter{
 	
 	private ServerSupporter(int port) {
 		this.port = port;
+		try {
+			System.out.print("Start server. IP: "+ 
+			           Inet4Address.getLocalHost().getHostAddress() + 
+			           ", Port: " + port);
+		} catch (UnknownHostException e) {
+			System.out.println("..FAIL." + e.getMessage());
+		}
 	}
 	
 	/* (non-Javadoc)

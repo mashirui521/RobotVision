@@ -22,8 +22,8 @@ stInfo = struct('hSupporter', '', ...
                 'nClientPort', '');
 
 %% initialize supporter
-display(sprintf('Start server. IP: %s, Port: %d', ...
-    char(java.net.Inet4Address.getLocalHost.getHostAddress), nPort));            
+%display(sprintf('Start server. IP: %s, Port: %d', ...
+%    char(java.net.Inet4Address.getLocalHost.getHostAddress), nPort));            
 stInfo.hSupporter = mls_supporter_get(nPort);
 
 %% listen the testing action from client
