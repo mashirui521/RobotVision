@@ -67,4 +67,9 @@ public interface IServerSupporter {
 	 */
 	public String getClientIpAddress();
 	
+	/**
+	 * @return
+	 */
+	public byte[] getData();
+	
 }

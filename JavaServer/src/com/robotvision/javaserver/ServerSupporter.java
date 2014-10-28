@@ -184,4 +184,12 @@ public class ServerSupporter implements IServerSupporter{
 		return B;
 	}
 	
+	/* (non-Javadoc)
+	 * @see com.robotvision.javaserver.IServerSupporter#getData()
+	 */
+	@Override
+	public byte[] getData() {
+		return data;
+	}
+	
 }
