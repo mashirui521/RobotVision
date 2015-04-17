@@ -89,4 +89,17 @@ public class UTestSuite01 {
 		}
 		
 	}
+	
+	@Test
+	public void UTest02() {
+		IServerSupporter supporter = ServerSupporter.getInstance(8888);
+		try {
+			for (int i = 0; i < 50; i++) {
+				supporter.receivePicture();
+				System.out.println(i);
+			}
+		} catch (IOException e) {
+			fail("fail to receive: " + e.getMessage());
+		}
+	}
 }
